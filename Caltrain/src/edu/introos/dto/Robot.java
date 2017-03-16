@@ -5,6 +5,8 @@
  */
 package edu.introos.dto;
 
+import edu.introos.services.RobotNameGenerator;
+
 /**
  *
  * @author Allendale
@@ -15,6 +17,8 @@ public class Robot {
     
     public Robot(){
         // GENERATE RANDOM NAME
+        RobotNameGenerator nameGenerator = new RobotNameGenerator();
+        this.ROBOT_NAME = nameGenerator.generateName();
         this.ROBOT_STATUS = "WAITING";
     }
     
