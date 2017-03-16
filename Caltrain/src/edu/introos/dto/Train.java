@@ -11,11 +11,12 @@ package edu.introos.dto;
  */
 public class Train {
     
-    private String TRAIN_STATUS;
-    private int TRAIN_NOOFSEATS;
-    private int TRAIN_NOOFPASSENGERS;
-    private int TRAIN_AVAILABLESEATS;
-    private String TRAIN_NAME;
+    private String TRAIN_STATUS;      // Domain: IDLE, TRAVELING, LOADING
+    private int TRAIN_NOOFSEATS;      // Maximum number of seats in the train
+    private int TRAIN_NOOFPASSENGERS; // Number of Passengers in the train
+    private int TRAIN_AVAILABLESEATS; // Computer by subtracting TRAIN_NOOFSEATS and TRAIN_AVAILABLESEATS
+    private String TRAIN_NAME;        // Optional name of Train object
+    private String TRAIN_DOORSTATUS;  // Domain: OPEN, CLOSED
     
     public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME) {
         this.TRAIN_STATUS = "IDLE";
@@ -23,6 +24,7 @@ public class Train {
         this.TRAIN_NAME = TRAIN_NAME;
         this.TRAIN_NOOFPASSENGERS = 0;
         this.TRAIN_AVAILABLESEATS = this.TRAIN_NOOFSEATS;
+        this.TRAIN_DOORSTATUS = "CLOSED";
 
     }
 
@@ -95,6 +97,20 @@ public class Train {
      */
     public void setTRAIN_NAME(String TRAIN_NAME) {
         this.TRAIN_NAME = TRAIN_NAME;
+    }
+
+    /**
+     * @return the TRAIN_DOORSTATUS
+     */
+    public String getTRAIN_DOORSTATUS() {
+        return TRAIN_DOORSTATUS;
+    }
+
+    /**
+     * @param TRAIN_DOORSTATUS the TRAIN_DOORSTATUS to set
+     */
+    public void setTRAIN_DOORSTATUS(String TRAIN_DOORSTATUS) {
+        this.TRAIN_DOORSTATUS = TRAIN_DOORSTATUS;
     }
     
     
