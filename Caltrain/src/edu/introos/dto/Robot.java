@@ -14,6 +14,7 @@ import edu.introos.services.RobotNameGenerator;
 public class Robot {
     private String ROBOT_NAME;
     private String ROBOT_STATUS; // Stasuses: 'WAITING' & 'ONBOARD'
+    private int ROBOT_NOOFSTATION; // Max of 7 stations
     
     public Robot(){
         // GENERATE RANDOM NAME

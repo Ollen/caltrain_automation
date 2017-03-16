@@ -5,6 +5,8 @@
  */
 package edu.introos.dto;
 
+import edu.introos.services.NumberGenerator;
+
 /**
  *
  * @author Mark Christian Sanchez
@@ -104,6 +106,13 @@ public class Station {
     private void Station_Init() {
         this.STATION_STATUS = "IDLE";
         this.TRAIN_ONSTATION = null;
+        this.STATION_PASSNGERSWAITING = 0;
+        
+    }
+    
+    public void Station_Add_Passengers() {
+        
+        this.STATION_PASSNGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
     }
     
     
