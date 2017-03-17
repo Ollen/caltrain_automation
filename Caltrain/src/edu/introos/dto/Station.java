@@ -11,15 +11,29 @@ import edu.introos.services.NumberGenerator;
  *
  * @author Mark Christian Sanchez
  */
-public class Station {
+public class Station implements Runnable {
     
-    private String STATION_STATUS;          // Domain: IDLE, OCCUPIED
-    private String STATION_NAME;            // Optional name for Station object
-    private int STATION_PASSNGERSWAITING;   // Number of Passengers waiting in the train station
-    private Train TRAIN_ONSTATION;           // The current Train object in the station
+    private String STATION_STATUS;            // Domain: IDLE, OCCUPIED
+    private String STATION_NAME;              // Optional name for Station object
+    private int STATION_PASSNGERSWAITING;     // Number of Passengers waiting in the train station
+    private Train TRAIN_ONSTATION;            // The current Train object in the station
+    private boolean STATION_HASTRAIN; // Does the station have a train? 
     
     public Station() {
         this.Station_Init();
+    }
+    
+    @Override
+    public void run() {
+        
+        while(!STATION_HASTRAIN) {
+            // Generate Passengers
+        }
+        
+        while(STATION_HASTRAIN) {
+            // Run critical code here
+        }
+        
     }
 
     /**
@@ -107,12 +121,27 @@ public class Station {
         this.STATION_STATUS = "IDLE";
         this.TRAIN_ONSTATION = null;
         this.STATION_PASSNGERSWAITING = 0;
+        this.STATION_HASTRAIN = false;
         
     }
     
     public void Station_Add_Passengers() {
         
         this.STATION_PASSNGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
+    }
+
+    /**
+     * @return the STATION_HASTRAIN
+     */
+    public boolean isSTATION_HASTRAIN() {
+        return STATION_HASTRAIN;
+    }
+
+    /**
+     * @param STATION_HASTRAIN the STATION_HASTRAIN to set
+     */
+    public void setSTATION_HASTRAIN(boolean STATION_HASTRAIN) {
+        this.STATION_HASTRAIN = STATION_HASTRAIN;
     }
     
     

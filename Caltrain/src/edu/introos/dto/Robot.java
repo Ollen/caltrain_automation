@@ -11,7 +11,7 @@ import edu.introos.services.RobotNameGenerator;
  *
  * @author Allendale
  */
-public class Robot {
+public class Robot implements Runnable {
     private static int TOTAL_ROBOT_NUM = 0;
     private String ROBOT_NAME;
     private String ROBOT_STATUS; // Stasuses: 'WAITING' & 'ONBOARD'
@@ -26,6 +26,10 @@ public class Robot {
         this.ROBOT_STATUS = "WAITING";
     }
 
+    @Override
+    public void run() {
+        
+    }
     /**
      * @return the TOTAL_ROBOT_NUM
      */
