@@ -9,7 +9,7 @@ package edu.introos.dto;
  *
  * @author Mark Christian Sanchez
  */
-public class Train {
+public class Train implements Runnable {
     
     private String TRAIN_STATUS;      // Domain: IDLE, TRAVELING, LOADING
     private int TRAIN_NOOFSEATS;      // Maximum number of seats in the train
@@ -17,6 +17,7 @@ public class Train {
     private int TRAIN_AVAILABLESEATS; // Computer by subtracting TRAIN_NOOFSEATS and TRAIN_AVAILABLESEATS
     private String TRAIN_NAME;        // Optional name of Train object
     private String TRAIN_DOORSTATUS;  // Domain: OPEN, CLOSED
+    private boolean TRAIN_ISRUNNING; // Is it running?
     
     public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME) {
         this.TRAIN_STATUS = "IDLE";
@@ -25,7 +26,17 @@ public class Train {
         this.TRAIN_NOOFPASSENGERS = 0;
         this.TRAIN_AVAILABLESEATS = this.TRAIN_NOOFSEATS;
         this.TRAIN_DOORSTATUS = "CLOSED";
+        this.TRAIN_ISRUNNING = true;
 
+    }
+    
+    @Override
+    public void run() {
+        System.out.println(this.TRAIN_NAME + " is created and running");
+        while(TRAIN_ISRUNNING) {
+            
+        }
+        
     }
 
     /**
@@ -112,6 +123,21 @@ public class Train {
     public void setTRAIN_DOORSTATUS(String TRAIN_DOORSTATUS) {
         this.TRAIN_DOORSTATUS = TRAIN_DOORSTATUS;
     }
+
+    /**
+     * @return the TRAIN_ISRUNNING
+     */
+    public boolean isTRAIN_ISRUNNING() {
+        return TRAIN_ISRUNNING;
+    }
+
+    /**
+     * @param TRAIN_ISRUNNING the TRAIN_ISRUNNING to set
+     */
+    public void setTRAIN_ISRUNNING(boolean TRAIN_ISRUNNING) {
+        this.TRAIN_ISRUNNING = TRAIN_ISRUNNING;
+    }
+    
     
     
 }

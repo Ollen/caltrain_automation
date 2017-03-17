@@ -6,20 +6,87 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
  * @author Mark Christian Sanchez
  */
-public class Station {
+public class Station implements Runnable {
     
-    private String STATION_STATUS;          // Domain: IDLE, OCCUPIED
-    private String STATION_NAME;            // Optional name for Station object
-    private int STATION_PASSNGERSWAITING;   // Number of Passengers waiting in the train station
-    private Train TRAIN_ONSTATION;           // The current Train object in the station
+    private String STATION_STATUS;            // Domain: IDLE, OCCUPIED
+    private String STATION_NAME;              // Optional name for Station object
+    private int STATION_PASSENGERSWAITING;     // Number of Passengers waiting in the train station
+    private Train TRAIN_ONSTATION;            // The current Train object in the station
+    private boolean STATION_HASTRAIN;         // Does the station have a train? 
+    private Lock STATION_LOCK; 
+    private Thread[] STATION_ROBOTS;
     
-    public Station() {
-        this.Station_Init();
+    public Station(String STATION_NAME) {
+        this.Station_Init(STATION_NAME);
+        
+    }
+    
+    private void Station_Init(String STATION_NAME) {
+        this.STATION_STATUS = "IDLE";
+        this.TRAIN_ONSTATION = null;
+        this.STATION_PASSENGERSWAITING = 0;
+        this.STATION_HASTRAIN = false;
+        this.STATION_NAME = STATION_NAME;
+        
+        // Generate Passengers/Robots
+        STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
+        // CREATE ROBOTS/PASENGERS
+        STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
+        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
+            //thread[i] = new Thread(new Robot());
+            STATION_ROBOTS[i] = new Thread(new Robot());
+            STATION_ROBOTS[i].start();
+        }   
+    }
+   
+    
+    @Override
+    public void run() {
+        
+        while(!STATION_HASTRAIN) {
+            
+        }
+        
+        while(STATION_HASTRAIN) {
+            // Run critical code here
+        }
+        
+    }
+    
+    public void lock_init() {
+        STATION_LOCK = new ReentrantLock();
+    }
+    
+    public void lock_acquire() {
+        STATION_LOCK.lock();
+    }
+    
+    public void lock_release() {
+        STATION_LOCK.unlock();
+    }
+    
+    public void cond_init() {
+        
+    }
+    
+    public void cond_wait() {
+        
+    }
+    
+    public void cond_signal() {
+        
+    }
+    
+    public void cond_broadcast() {
+        
     }
 
     /**
@@ -54,14 +121,14 @@ public class Station {
      * @return the STATION_PASSNGERSWAITING
      */
     public int getSTATION_PASSNGERSWAITING() {
-        return STATION_PASSNGERSWAITING;
+        return STATION_PASSENGERSWAITING;
     }
 
     /**
      * @param STATION_PASSNGERSWAITING the STATION_PASSNGERSWAITING to set
      */
     public void setSTATION_PASSNGERSWAITING(int STATION_PASSNGERSWAITING) {
-        this.STATION_PASSNGERSWAITING = STATION_PASSNGERSWAITING;
+        this.STATION_PASSENGERSWAITING = STATION_PASSNGERSWAITING;
     }
 
     /**
@@ -103,16 +170,25 @@ public class Station {
         return true;
     }
     
-    private void Station_Init() {
-        this.STATION_STATUS = "IDLE";
-        this.TRAIN_ONSTATION = null;
-        this.STATION_PASSNGERSWAITING = 0;
-        
-    }
+
     
     public void Station_Add_Passengers() {
         
-        this.STATION_PASSNGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        this.STATION_PASSENGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
+    }
+
+    /**
+     * @return the STATION_HASTRAIN
+     */
+    public boolean isSTATION_HASTRAIN() {
+        return STATION_HASTRAIN;
+    }
+
+    /**
+     * @param STATION_HASTRAIN the STATION_HASTRAIN to set
+     */
+    public void setSTATION_HASTRAIN(boolean STATION_HASTRAIN) {
+        this.STATION_HASTRAIN = STATION_HASTRAIN;
     }
     
     
