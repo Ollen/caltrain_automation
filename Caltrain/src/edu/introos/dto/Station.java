@@ -17,20 +17,42 @@ public class Station implements Runnable {
     
     private String STATION_STATUS;            // Domain: IDLE, OCCUPIED
     private String STATION_NAME;              // Optional name for Station object
-    private int STATION_PASSNGERSWAITING;     // Number of Passengers waiting in the train station
+    private int STATION_PASSENGERSWAITING;     // Number of Passengers waiting in the train station
     private Train TRAIN_ONSTATION;            // The current Train object in the station
-    private boolean STATION_HASTRAIN; // Does the station have a train? 
+    private boolean STATION_HASTRAIN;         // Does the station have a train? 
     private Lock STATION_LOCK; 
+    private Thread[] STATION_ROBOTS;
     
-    public Station() {
-        this.Station_Init();
+    public Station(String STATION_NAME) {
+        this.Station_Init(STATION_NAME);
+        
     }
+    
+    private void Station_Init(String STATION_NAME) {
+        this.STATION_STATUS = "IDLE";
+        this.TRAIN_ONSTATION = null;
+        this.STATION_PASSENGERSWAITING = 0;
+        this.STATION_HASTRAIN = false;
+        this.STATION_NAME = STATION_NAME;
+        
+        // Generate Passengers/Robots
+        STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        System.out.println(STATION_PASSENGERSWAITING);
+        // CREATE ROBOTS/PASENGERS
+        STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
+        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
+            //thread[i] = new Thread(new Robot());
+            STATION_ROBOTS[i] = new Thread(new Robot());
+            STATION_ROBOTS[i].start();
+        }   
+    }
+   
     
     @Override
     public void run() {
         
         while(!STATION_HASTRAIN) {
-            // Generate Passengers
+            
         }
         
         while(STATION_HASTRAIN) {
@@ -99,14 +121,14 @@ public class Station implements Runnable {
      * @return the STATION_PASSNGERSWAITING
      */
     public int getSTATION_PASSNGERSWAITING() {
-        return STATION_PASSNGERSWAITING;
+        return STATION_PASSENGERSWAITING;
     }
 
     /**
      * @param STATION_PASSNGERSWAITING the STATION_PASSNGERSWAITING to set
      */
     public void setSTATION_PASSNGERSWAITING(int STATION_PASSNGERSWAITING) {
-        this.STATION_PASSNGERSWAITING = STATION_PASSNGERSWAITING;
+        this.STATION_PASSENGERSWAITING = STATION_PASSNGERSWAITING;
     }
 
     /**
@@ -148,17 +170,11 @@ public class Station implements Runnable {
         return true;
     }
     
-    private void Station_Init() {
-        this.STATION_STATUS = "IDLE";
-        this.TRAIN_ONSTATION = null;
-        this.STATION_PASSNGERSWAITING = 0;
-        this.STATION_HASTRAIN = false;
-        
-    }
+
     
     public void Station_Add_Passengers() {
         
-        this.STATION_PASSNGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        this.STATION_PASSENGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();
     }
 
     /**

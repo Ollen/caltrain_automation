@@ -6,13 +6,14 @@
 package edu.introos.dto;
 
 import edu.introos.services.RobotNameGenerator;
+import java.util.Random;
 
 /**
  *
  * @author Allendale
  */
 public class Robot implements Runnable {
-    private static int TOTAL_ROBOT_NUM = 0;
+    private static int TOTAL_ROBOT_NUM = 0; //Tracks the number of spawned Robots
     private String ROBOT_NAME;
     private String ROBOT_STATUS; // Stasuses: 'WAITING' & 'ONBOARD'
     private int ROBOT_NOOFSTATION; // Max of 7 stations
@@ -23,7 +24,11 @@ public class Robot implements Runnable {
         // GENERATE RANDOM NAME
         RobotNameGenerator nameGenerator = new RobotNameGenerator();
         this.ROBOT_NAME = "[" + TOTAL_ROBOT_NUM + "]" + nameGenerator.generateName();
+        // SET STATUS TO WAITING
         this.ROBOT_STATUS = "WAITING";
+        // GENERATE RANDOM STATION DESTINATION
+        Random rand = new Random();
+        this.ROBOT_NOOFSTATION = rand.nextInt(7) + 1;
     }
 
     @Override

@@ -5,7 +5,7 @@
  */
 package edu.introos.main;
 
-import edu.introos.dto.Robot;
+import edu.introos.dto.Station;
 
 /**
  *
@@ -17,13 +17,15 @@ public class Caltrain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Main Test
-        Robot robot_1 = new Robot();
-        Robot robot_2 = new Robot();
-        System.out.println(robot_1.getROBOT_NAME());
-        System.out.println(Robot.getTOTAL_ROBOT_NUM());
-        System.out.println(robot_2.getROBOT_NAME());
-        System.out.println(Robot.getTOTAL_ROBOT_NUM());
+       Thread[] stationThreads = new Thread[8];
+       String[] stationNames = {"Taft", "Magallanes", "Ayala", "Buendia", "Guadalupe", "Boni", "Shaw", "Ortigas"}; 
+       for(int i = 0; i < 8; i++) {
+
+           stationThreads[i] = new Thread(new Station());
+           stationThreads[i].
+           stationThreads[i].start();
+       }
+
     }
     
 }
