@@ -37,7 +37,7 @@ public class Station implements Runnable {
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
-        System.out.println(STATION_PASSENGERSWAITING);
+        System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){

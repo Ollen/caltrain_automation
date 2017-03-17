@@ -21,8 +21,7 @@ public class Caltrain {
        String[] stationNames = {"Taft", "Magallanes", "Ayala", "Buendia", "Guadalupe", "Boni", "Shaw", "Ortigas"}; 
        for(int i = 0; i < 8; i++) {
 
-           stationThreads[i] = new Thread(new Station());
-           stationThreads[i].
+           stationThreads[i] = new Thread(new Station(stationNames[i]));
            stationThreads[i].start();
        }
 
