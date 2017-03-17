@@ -32,9 +32,9 @@ public class Train implements Runnable {
     
     @Override
     public void run() {
-        
+        System.out.println(this.TRAIN_NAME + " is created and running");
         while(TRAIN_ISRUNNING) {
-            // run critical code here
+            
         }
         
     }
