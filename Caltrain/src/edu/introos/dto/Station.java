@@ -6,6 +6,8 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Station implements Runnable {
     private int STATION_PASSNGERSWAITING;     // Number of Passengers waiting in the train station
     private Train TRAIN_ONSTATION;            // The current Train object in the station
     private boolean STATION_HASTRAIN; // Does the station have a train? 
+    private Lock STATION_LOCK; 
     
     public Station() {
         this.Station_Init();
@@ -33,6 +36,34 @@ public class Station implements Runnable {
         while(STATION_HASTRAIN) {
             // Run critical code here
         }
+        
+    }
+    
+    public void lock_init() {
+        STATION_LOCK = new ReentrantLock();
+    }
+    
+    public void lock_acquire() {
+        STATION_LOCK.lock();
+    }
+    
+    public void lock_release() {
+        STATION_LOCK.unlock();
+    }
+    
+    public void cond_init() {
+        
+    }
+    
+    public void cond_wait() {
+        
+    }
+    
+    public void cond_signal() {
+        
+    }
+    
+    public void cond_broadcast() {
         
     }
 
