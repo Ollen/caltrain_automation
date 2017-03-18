@@ -46,9 +46,9 @@ public class Train implements Runnable {
         while(TRAIN_ISRUNNING) {
                 TRAIN_STATIONS[TRAIN_WHERE].lock_acquire();
                 
-                try {
-                    System.out.println(this.getTRAIN_NAME() + " is arriving in " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
-                    System.out.println("Number of Passengers " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_PASSNGERSWAITING());
+                try {   
+                    System.out.println(this.getTRAIN_NAME() + ": " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
+                    
                     TRAIN_STATIONS[TRAIN_WHERE].cond_broadcast();
                     sleep(5000);
                 }
