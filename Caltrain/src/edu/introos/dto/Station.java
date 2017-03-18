@@ -6,8 +6,11 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,8 +23,10 @@ public class Station implements Runnable {
     private int STATION_PASSENGERSWAITING;     // Number of Passengers waiting in the train station
     private Train TRAIN_ONSTATION;            // The current Train object in the station
     private boolean STATION_HASTRAIN;         // Does the station have a train? 
-    private Lock STATION_LOCK; 
+    private Lock STATION_LOCK;
+    private Condition STATION_CONDITION;
     private Thread[] STATION_ROBOTS;
+    
     
     public Station(String STATION_NAME) {
         this.Station_Init(STATION_NAME);
@@ -44,7 +49,9 @@ public class Station implements Runnable {
             //thread[i] = new Thread(new Robot());
             STATION_ROBOTS[i] = new Thread(new Robot());
             STATION_ROBOTS[i].start();
-        }   
+        }
+        this.lock_init();
+        this.cond_init();
     }
    
     
@@ -74,19 +81,24 @@ public class Station implements Runnable {
     }
     
     public void cond_init() {
-        
+        STATION_CONDITION = STATION_LOCK.newCondition();
     }
     
     public void cond_wait() {
-        
+        try {
+            STATION_CONDITION.await();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void cond_signal() {
+        STATION_CONDITION.signal();
         
     }
     
     public void cond_broadcast() {
-        
+        STATION_CONDITION.signalAll();
     }
 
     /**

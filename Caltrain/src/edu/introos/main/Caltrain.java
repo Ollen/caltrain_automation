@@ -21,6 +21,7 @@ public class Caltrain {
     
     static Thread[] stationThreads = new Thread[8];
     static Thread[] trainThreads = new Thread[16];
+    static Station[] stations = new Station[8];
     static int numOfTrains = 0;
     
     public static void main(String[] args) {
@@ -29,7 +30,10 @@ public class Caltrain {
        
        for(int i = 0; i < 8; i++) {
 
-           stationThreads[i] = new Thread(new Station(stationNames[i]));
+           Station station = new Station(stationNames[i]);
+           stationThreads[i] = new Thread(station);
+           stations[i] = station;
+           stationThreads[i].setName(stationNames[i]);
            stationThreads[i].start();
        }
        
@@ -97,7 +101,7 @@ public class Caltrain {
                 }
             }
             //Create The Train
-            trainThreads[numOfTrains] = new Thread(new Train(numOfSeats, trainName));
+            trainThreads[numOfTrains] = new Thread(new Train(numOfSeats, trainName, stations));
             trainThreads[numOfTrains].start();
             numOfTrains++;
         } else{

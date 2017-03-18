@@ -5,6 +5,8 @@
  */
 package edu.introos.dto;
 
+import static java.lang.Thread.sleep;
+
 /**
  *
  * @author Mark Christian Sanchez
@@ -18,8 +20,10 @@ public class Train implements Runnable {
     private String TRAIN_NAME;        // Optional name of Train object
     private String TRAIN_DOORSTATUS;  // Domain: OPEN, CLOSED
     private boolean TRAIN_ISRUNNING; // Is it running?
+    private final Station[] TRAIN_STATIONS;
+    private int TRAIN_WHERE;
     
-    public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME) {
+    public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
         this.TRAIN_STATUS = "IDLE";
         this.TRAIN_NOOFSEATS = TRAIN_NOOFSEATS;
         this.TRAIN_NAME = TRAIN_NAME;
@@ -27,15 +31,37 @@ public class Train implements Runnable {
         this.TRAIN_AVAILABLESEATS = this.TRAIN_NOOFSEATS;
         this.TRAIN_DOORSTATUS = "CLOSED";
         this.TRAIN_ISRUNNING = true;
+        this.TRAIN_STATIONS = TRAIN_STATIONS;
+        this.TRAIN_WHERE = 0;
 
     }
     
     @Override
     public void run() {
         System.out.println(this.TRAIN_NAME + " is created and running");
-        while(TRAIN_ISRUNNING) {
-            
+        for(Station stations : TRAIN_STATIONS) {
+            System.out.println(stations.getSTATION_NAME());
         }
+        
+        while(TRAIN_ISRUNNING) {
+                TRAIN_STATIONS[TRAIN_WHERE].lock_acquire();
+                
+                try {
+                    System.out.println(this.getTRAIN_NAME() + " is arriving in " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
+                    System.out.println("Number of Passengers " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_PASSNGERSWAITING());
+                    TRAIN_STATIONS[TRAIN_WHERE].cond_broadcast();
+                    sleep(5000);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    TRAIN_STATIONS[TRAIN_WHERE].lock_release();
+                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+                }
+            }
+            
+
         
     }
 
@@ -137,6 +163,7 @@ public class Train implements Runnable {
     public void setTRAIN_ISRUNNING(boolean TRAIN_ISRUNNING) {
         this.TRAIN_ISRUNNING = TRAIN_ISRUNNING;
     }
+    
     
     
     
