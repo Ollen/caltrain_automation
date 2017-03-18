@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Mark Christian Sanchez
  */
-public class Station implements Runnable {
+public class Station {
     
     private String STATION_STATUS;            // Domain: IDLE, OCCUPIED
     private String STATION_NAME;              // Optional name for Station object
@@ -26,6 +26,7 @@ public class Station implements Runnable {
     private Lock STATION_LOCK;
     private Condition STATION_CONDITION;
     private Thread[] STATION_ROBOTS;
+    private Robot[] ROBOT_OBJECT;
     
     
     public Station(String STATION_NAME) {
@@ -47,25 +48,57 @@ public class Station implements Runnable {
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
-            STATION_ROBOTS[i] = new Thread(new Robot());
+            Robot passenger = new Robot();
+            ROBOT_OBJECT[i] = passenger;
+            STATION_ROBOTS[i] = new Thread(passenger);
             STATION_ROBOTS[i].start();
         }
         this.lock_init();
         this.cond_init();
     }
-   
     
-    @Override
-    public void run() {
+    public boolean Station_Load_Train(int TRAIN_AVAILABLESEATS) {
+        // Load Train
         
-        while(!STATION_HASTRAIN) {
+        this.lock_acquire();
+        // Start Critical Section
+        System.out.println("Train doors have opened!");
+        if(STATION_PASSENGERSWAITING == 0) {
+            System.out.println("No passengers in " + this.getSTATION_NAME());
+                        
+        }
+        else if(TRAIN_AVAILABLESEATS == 0) {
+            System.out.println("No more seats! Train is leaving.");
             
         }
-        
-        while(STATION_HASTRAIN) {
-            // Run critical code here
+        else {
+            System.out.println("Passengers boarding!");
+            this.cond_broadcast();
+            
         }
+        // End Critical Section
+        this.lock_release();
+        // Otherwise
+        return false;
+    }
+    
+    public boolean Station_Wait_For_Train() {
+        // Wait for the Train to come
+        this.lock_acquire();
+        // Start Critical Section 
         
+        // End Critical Section
+        this.lock_release();
+        // Otherwise
+        return false;
+    }
+    
+    public boolean Station_On_Board() {
+        // Account all passengers if they are onboard
+        
+        
+        // Ultimately
+        return true;
     }
     
     public void lock_init() {
@@ -156,34 +189,7 @@ public class Station implements Runnable {
     public void setTRAIN_ONSTATION(Train TRAIN_ONSTATION) {
         this.TRAIN_ONSTATION = TRAIN_ONSTATION;
     }
-    
-    public boolean Station_Load_Train() {
-        // Load Passengers here
-        
-        // Otherwise
-        return false;
-    }
-    
-    public boolean Station_Wait_For_Train() {
-        // Wait for the Train to come
-        
-        // Critical Section here
-        
-        
-        // Otherwise
-        return false;
-    }
-    
-    public boolean Station_On_Board() {
-        // Account all passengers if they are onboard
-        
-        
-        // Ultimately
-        return true;
-    }
-    
-
-    
+       
     public void Station_Add_Passengers() {
         
         this.STATION_PASSENGERSWAITING += NumberGenerator.GENERATE_PASSENGER_INFLUX();

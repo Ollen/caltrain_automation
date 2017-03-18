@@ -5,7 +5,8 @@
  */
 package edu.introos.dto;
 
-import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,20 +45,25 @@ public class Train implements Runnable {
         }
         
         while(TRAIN_ISRUNNING) {
-                TRAIN_STATIONS[TRAIN_WHERE].lock_acquire();
                 
-                try {   
-                    System.out.println(this.getTRAIN_NAME() + ": " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
-                    
-                    TRAIN_STATIONS[TRAIN_WHERE].cond_broadcast();
-                    sleep(5000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finally {
-                    TRAIN_STATIONS[TRAIN_WHERE].lock_release();
-                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+//                try {   
+//                    System.out.println(this.getTRAIN_NAME() + ": " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
+//                    TRAIN_STATIONS[TRAIN_WHERE].cond_broadcast();
+//                    sleep(5000);
+//                }
+//                catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                finally {
+//                    TRAIN_STATIONS[TRAIN_WHERE].lock_release();
+//                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+//                }
+                TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
+                TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             

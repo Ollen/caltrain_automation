@@ -19,7 +19,6 @@ public class Caltrain {
      * @param args the command line arguments
      */
     
-    static Thread[] stationThreads = new Thread[8];
     static Thread[] trainThreads = new Thread[16];
     static Station[] stations = new Station[8];
     static int numOfTrains = 0;
@@ -31,10 +30,7 @@ public class Caltrain {
        for(int i = 0; i < 8; i++) {
 
            Station station = new Station(stationNames[i]);
-           stationThreads[i] = new Thread(station);
            stations[i] = station;
-           stationThreads[i].setName(stationNames[i]);
-           stationThreads[i].start();
        }
        
        //USER ACTION STARTS HERE
