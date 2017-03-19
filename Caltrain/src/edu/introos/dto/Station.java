@@ -45,10 +45,11 @@ public class Station {
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
+        ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
-            Robot passenger = new Robot();
+            Robot passenger = new Robot(this);
             ROBOT_OBJECT[i] = passenger;
             STATION_ROBOTS[i] = new Thread(passenger);
             STATION_ROBOTS[i].start();
@@ -57,11 +58,12 @@ public class Station {
         this.cond_init();
     }
     
-    public boolean Station_Load_Train(int TRAIN_AVAILABLESEATS) {
+    public void Station_Load_Train(int TRAIN_AVAILABLESEATS) {
         // Load Train
         
         this.lock_acquire();
         // Start Critical Section
+        System.out.println(TRAIN_ONSTATION.getTRAIN_NAME() + " is arriving at " + this.getSTATION_NAME() + " station.");
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
@@ -75,30 +77,41 @@ public class Station {
             System.out.println("Passengers boarding!");
             this.cond_broadcast();
             
+            
         }
         // End Critical Section
         this.lock_release();
         // Otherwise
-        return false;
+      
     }
     
-    public boolean Station_Wait_For_Train() {
-        // Wait for the Train to come
-        this.lock_acquire();
-        // Start Critical Section 
+    public void Station_Wait_For_Train() {
+
+        this.cond_wait();
+        this.Station_On_Board();
+       
         
-        // End Critical Section
-        this.lock_release();
-        // Otherwise
-        return false;
     }
     
-    public boolean Station_On_Board() {
+    public void Station_On_Board() {
         // Account all passengers if they are onboard
-        
-        
+        this.lock_acquire();
+        this.STATION_PASSENGERSWAITING = this.STATION_PASSENGERSWAITING--;
+        if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
+            //Wait for another train
+            this.lock_release();
+            // Sleep again
+            Station_Wait_For_Train();
+        }
+        else {
+            int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS();
+            TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers++);
+            System.out.println("A passenger boarded the train");
+            System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + "Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+        }
+        this.lock_release();
         // Ultimately
-        return true;
+        
     }
     
     public void lock_init() {
