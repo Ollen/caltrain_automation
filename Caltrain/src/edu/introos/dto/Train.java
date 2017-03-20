@@ -55,6 +55,7 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
                 System.out.println("==================================== ARRIVING ====================================");
                 System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + " STATION! ====================================" );
+                System.out.println("++++++++++++++ Waiting passengers: " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_PASSNGERSWAITING());
                 this.DropPassenger();
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
@@ -82,7 +83,7 @@ public class Train implements Runnable {
     public void DropPassenger() {
         for (Robot passenger : TRAIN_PASSENGERS) {
             if(passenger.getROBOT_NOOFSTATION() == 0) {
-                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + this.getTRAIN_NAME() + " train.");
+                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + ".");
                 this.TRAIN_NOOFPASSENGERS--;
                 TRAIN_DROPOFFS.add(passenger);
             }

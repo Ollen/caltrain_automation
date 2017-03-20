@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -25,13 +26,26 @@ public class Station {
     private boolean STATION_HASTRAIN;         // Does the station have a train? 
     private Lock STATION_LOCK;
     private Condition STATION_CONDITION;
-    private Thread[] STATION_ROBOTS;
-    private Robot[] ROBOT_OBJECT;
+    private ArrayList<Thread> STATION_ROBOTS;
+    private ArrayList<Robot> ROBOT_OBJECT;
     
     
     public Station(String STATION_NAME) {
         this.Station_Init(STATION_NAME);
         
+    }
+    
+    private void GeneratePassengers(int STATION_PASSENGERSWAITING) {
+        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
+            //thread[i] = new Thread(new Robot());
+            Robot passenger = new Robot(this);
+            ROBOT_OBJECT.add(passenger);
+            STATION_ROBOTS.add(new Thread(passenger));
+            
+        }
+        for(Thread robot : STATION_ROBOTS) {
+            robot.start();
+        }
     }
     
     private void Station_Init(String STATION_NAME) {
@@ -40,25 +54,17 @@ public class Station {
         this.STATION_PASSENGERSWAITING = 0;
         this.STATION_HASTRAIN = false;
         this.STATION_NAME = STATION_NAME;
+        this.ROBOT_OBJECT = new ArrayList();
+        this.STATION_ROBOTS = new ArrayList();
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
-        ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
-        STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
         this.lock_init();
         this.cond_init();
-        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
-            //thread[i] = new Thread(new Robot());
-            Robot passenger = new Robot(this);
-            ROBOT_OBJECT[i] = passenger;
-            STATION_ROBOTS[i] = new Thread(passenger);
-            
-        }
-        for(int i = 0; i < STATION_PASSENGERSWAITING; i++) {
-            STATION_ROBOTS[i].start();
-        }
+        this.GeneratePassengers(STATION_PASSENGERSWAITING);
+        
 
     }
     
@@ -70,7 +76,8 @@ public class Station {
         System.out.println(TRAIN_ONSTATION.getTRAIN_NAME() + " is arriving at " + this.getSTATION_NAME() + " station.");
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
-            System.out.println("No passengers in " + this.getSTATION_NAME());                        
+            System.out.println("No passengers in " + this.getSTATION_NAME());                       
+            int influx = NumberGenerator.GENERATE_PASSENGER_INFLUX();
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
@@ -114,6 +121,7 @@ public class Station {
                 int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                 TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                 TRAIN_ONSTATION.AddPassenger(passenger);
+                ROBOT_OBJECT.remove(passenger);
                 System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                 System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                 System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
