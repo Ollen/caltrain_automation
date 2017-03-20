@@ -107,7 +107,7 @@ public class Station {
     public void Station_On_Board(Robot passenger) {
         // Account all passengers if they are onboard
         this.mutex_acquire();
-        this.STATION_PASSENGERSWAITING = this.STATION_PASSENGERSWAITING--;
+        
         try {
                 if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
                 //Wait for another train
@@ -121,6 +121,7 @@ public class Station {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                    this.STATION_PASSENGERSWAITING--;
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
