@@ -5,6 +5,7 @@
  */
 package edu.introos.dto;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +23,7 @@ public class Train implements Runnable {
     private String TRAIN_DOORSTATUS;  // Domain: OPEN, CLOSED
     private boolean TRAIN_ISRUNNING; // Is it running?
     private final Station[] TRAIN_STATIONS;
-    private Robot[] TRAIN_PASSENGERS;
+    private ArrayList<Robot> TRAIN_PASSENGERS;
     private int TRAIN_WHERE;
     
     public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
@@ -35,7 +36,7 @@ public class Train implements Runnable {
         this.TRAIN_ISRUNNING = true;
         this.TRAIN_STATIONS = TRAIN_STATIONS;
         this.TRAIN_WHERE = 0;
-        this.TRAIN_PASSENGERS = new Robot[this.TRAIN_NOOFSEATS];
+        this.TRAIN_PASSENGERS = new ArrayList();
 
     }
     
@@ -75,12 +76,12 @@ public class Train implements Runnable {
     }
     
     public void AddPassenger(Robot passenger) {
-        TRAIN_PASSENGERS[this.TRAIN_NOOFPASSENGERS - 1] = passenger;
+        TRAIN_PASSENGERS.add(passenger);
     }
     
     public void ListPassengers() {
         for(int i = 0; i < this.TRAIN_NOOFPASSENGERS; i++) {
-            System.out.println(TRAIN_PASSENGERS[i].getROBOT_NAME() + " is in the " + this.TRAIN_NAME + " train");
+            System.out.println(TRAIN_PASSENGERS.get(i) + " is in the " + this.TRAIN_NAME + " train");
         }
     }
 
