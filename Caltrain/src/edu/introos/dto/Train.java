@@ -51,19 +51,10 @@ public class Train implements Runnable {
         
         while(TRAIN_ISRUNNING) {
                 
-//                try {   
-//                    System.out.println(this.getTRAIN_NAME() + ": " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
-//                    TRAIN_STATIONS[TRAIN_WHERE].cond_broadcast();
-//                    sleep(5000);
-//                }
-//                catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                finally {
-//                    TRAIN_STATIONS[TRAIN_WHERE].lock_release();
-//                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
-//                }
+
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
+                System.out.println("==================================== ARRIVING ====================================");
+                System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + " STATION! ====================================" );
                 this.DropPassenger();
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
