@@ -70,8 +70,7 @@ public class Station {
         System.out.println(TRAIN_ONSTATION.getTRAIN_NAME() + " is arriving at " + this.getSTATION_NAME() + " station.");
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
-            System.out.println("No passengers in " + this.getSTATION_NAME());
-                        
+            System.out.println("No passengers in " + this.getSTATION_NAME());                        
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
@@ -102,23 +101,30 @@ public class Station {
         // Account all passengers if they are onboard
         this.lock_acquire();
         this.STATION_PASSENGERSWAITING = this.STATION_PASSENGERSWAITING--;
-        if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
-            //Wait for another train
+        try {
+                if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
+                //Wait for another train
+
+                this.lock_release();
+                // Sleep again
+                Station_Wait_For_Train(passenger);
+            }
+            else {
+                int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
+                TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
+                TRAIN_ONSTATION.AddPassenger(passenger);
+                System.out.println(passenger.getROBOT_NAME() + " boarded the train");
+                System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+                System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                this.lock_release();
+            }
+        }
+        finally {
             
-            this.lock_release();
-            // Sleep again
-            Station_Wait_For_Train(passenger);
+            // Ultimately
         }
-        else {
-            int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
-            TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
-            TRAIN_ONSTATION.AddPassenger(passenger);
-            System.out.println(passenger.getROBOT_NAME() + " boarded the train");
-            System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
-            System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
-        }
-        this.lock_release();
-        // Ultimately
+        
+        
         
     }
     

@@ -24,6 +24,7 @@ public class Train implements Runnable {
     private boolean TRAIN_ISRUNNING; // Is it running?
     private final Station[] TRAIN_STATIONS;
     private ArrayList<Robot> TRAIN_PASSENGERS;
+    private ArrayList<Robot> TRAIN_DROPOFFS;
     private int TRAIN_WHERE;
     
     public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
@@ -37,6 +38,7 @@ public class Train implements Runnable {
         this.TRAIN_STATIONS = TRAIN_STATIONS;
         this.TRAIN_WHERE = 0;
         this.TRAIN_PASSENGERS = new ArrayList();
+        this.TRAIN_DROPOFFS = new ArrayList();
 
     }
     
@@ -62,6 +64,7 @@ public class Train implements Runnable {
 //                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
 //                }
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
+                this.DropPassenger();
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
                 try {
@@ -80,9 +83,23 @@ public class Train implements Runnable {
     }
     
     public void ListPassengers() {
-        for(int i = 0; i < this.TRAIN_NOOFPASSENGERS; i++) {
+        for(int i = 0; i < TRAIN_PASSENGERS.size(); i++) {
             System.out.println(TRAIN_PASSENGERS.get(i) + " is in the " + this.TRAIN_NAME + " train");
         }
+    }
+    
+    public void DropPassenger() {
+        for (Robot passenger : TRAIN_PASSENGERS) {
+            if(passenger.getROBOT_NOOFSTATION() == 0) {
+                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + this.getTRAIN_NAME() + " train.");
+                this.TRAIN_NOOFPASSENGERS--;
+                TRAIN_DROPOFFS.add(passenger);
+            }
+            else {
+                passenger.UpdateDestination();
+            }
+        }
+        TRAIN_PASSENGERS.removeAll(TRAIN_DROPOFFS);
     }
 
     /**

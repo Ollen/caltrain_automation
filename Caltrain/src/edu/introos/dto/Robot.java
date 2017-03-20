@@ -92,5 +92,9 @@ public class Robot implements Runnable {
         this.ROBOT_NOOFSTATION = ROBOT_NOOFSTATION;
     }
     
+    public void UpdateDestination() {
+        this.ROBOT_NOOFSTATION--;
+    }
+    
     
 }
