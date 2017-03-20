@@ -65,11 +65,14 @@ public class Train implements Runnable {
 //                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
 //                }
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
+                System.out.println("==================================== ARRIVING ====================================");
+                System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + " STATION! ====================================" );
                 this.DropPassenger();
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
-                TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+                
                 try {
                     Thread.sleep(5000);
+                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -90,9 +93,10 @@ public class Train implements Runnable {
     }
     
     public void DropPassenger() {
+        TRAIN_DROPOFFS.clear();
         for (Robot passenger : TRAIN_PASSENGERS) {
             if(passenger.getROBOT_NOOFSTATION() == 0) {
-                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + this.getTRAIN_NAME() + " train.");
+                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
                 this.TRAIN_NOOFPASSENGERS--;
                 TRAIN_DROPOFFS.add(passenger);
             }
@@ -101,6 +105,7 @@ public class Train implements Runnable {
             }
         }
         TRAIN_PASSENGERS.removeAll(TRAIN_DROPOFFS);
+        TRAIN_AVAILABLESEATS.release(TRAIN_DROPOFFS.size());
     }
 
     /**
@@ -135,7 +140,7 @@ public class Train implements Runnable {
      * @return the TRAIN_NOOFPASSENGERS
      */
     public int getTRAIN_NOOFPASSENGERS() {
-        return TRAIN_NOOFPASSENGERS;
+        return TRAIN_NOOFSEATS - this.getTRAIN_AVAILABLESEATS();
     }
 
     /**
@@ -151,6 +156,10 @@ public class Train implements Runnable {
     public int getTRAIN_AVAILABLESEATS() {
         
         return TRAIN_AVAILABLESEATS.availablePermits();
+    }
+    
+    public Semaphore getSemaphore() {
+        return TRAIN_AVAILABLESEATS;
     }
 
     /**

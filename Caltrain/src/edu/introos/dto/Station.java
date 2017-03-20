@@ -71,7 +71,6 @@ public class Station {
         
         this.mutex_acquire();
         // Start Critical Section
-        System.out.println(TRAIN_ONSTATION.getTRAIN_NAME() + " is arriving at " + this.getSTATION_NAME() + " station.");
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());                        
@@ -94,12 +93,12 @@ public class Station {
     
     public synchronized void Station_Wait_For_Train(Robot passenger) {
         this.mutex_acquire();
+        this.mutex_release();
         try {
             wait();
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.mutex_release();
         this.Station_On_Board(passenger);
        
         
@@ -112,19 +111,23 @@ public class Station {
         try {
                 if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
                 //Wait for another train
-
                 this.mutex_release();
                 // Sleep again
                 Station_Wait_For_Train(passenger);
             }
-            else {
-                int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
-                TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
-                TRAIN_ONSTATION.AddPassenger(passenger);
-                System.out.println(passenger.getROBOT_NAME() + " boarded the train");
-                System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
-                System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
-                this.mutex_release();
+                else {
+                        try {
+                            TRAIN_ONSTATION.getSemaphore().acquire();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
+                    TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
+                    TRAIN_ONSTATION.AddPassenger(passenger);
+                    System.out.println(passenger.getROBOT_NAME() + " boarded the train");
+                    System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+                    System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    this.mutex_release();
                 
             }
         }
