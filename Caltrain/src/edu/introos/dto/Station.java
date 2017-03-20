@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,6 +28,7 @@ public class Station {
     private Condition STATION_CONDITION;
     private Thread[] STATION_ROBOTS;
     private Robot[] ROBOT_OBJECT;
+    private Semaphore STATION_MUTEX;
     
     
     public Station(String STATION_NAME) {
@@ -40,6 +42,7 @@ public class Station {
         this.STATION_PASSENGERSWAITING = 0;
         this.STATION_HASTRAIN = false;
         this.STATION_NAME = STATION_NAME;
+        this.STATION_MUTEX = new Semaphore(1);
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
@@ -47,8 +50,6 @@ public class Station {
         // CREATE ROBOTS/PASENGERS
         ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
-        this.lock_init();
-        this.cond_init();
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
             Robot passenger = new Robot(this);
