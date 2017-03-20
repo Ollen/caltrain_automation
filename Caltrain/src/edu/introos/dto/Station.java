@@ -89,29 +89,31 @@ public class Station {
       
     }
     
-    public void Station_Wait_For_Train() {
+    public void Station_Wait_For_Train(Robot passenger) {
         this.lock_acquire();
         this.cond_wait();
         this.lock_release();
-        this.Station_On_Board();
+        this.Station_On_Board(passenger);
        
         
     }
     
-    public void Station_On_Board() {
+    public void Station_On_Board(Robot passenger) {
         // Account all passengers if they are onboard
         this.lock_acquire();
         this.STATION_PASSENGERSWAITING = this.STATION_PASSENGERSWAITING--;
         if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
             //Wait for another train
+            
             this.lock_release();
             // Sleep again
-            Station_Wait_For_Train();
+            Station_Wait_For_Train(passenger);
         }
         else {
             int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
             TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
-            System.out.println("A passenger boarded the train");
+            TRAIN_ONSTATION.AddPassenger(passenger);
+            System.out.println(passenger.getROBOT_NAME() + " boarded the train");
             System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
             System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
         }

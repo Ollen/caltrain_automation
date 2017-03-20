@@ -34,7 +34,7 @@ public class Robot implements Runnable {
 
     @Override
     public void run() {
-            ROBOT_STATION.Station_Wait_For_Train();
+            ROBOT_STATION.Station_Wait_For_Train(this);
     }
     /**
      * @return the TOTAL_ROBOT_NUM
