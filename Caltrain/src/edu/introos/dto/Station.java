@@ -47,15 +47,19 @@ public class Station {
         // CREATE ROBOTS/PASENGERS
         ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
+        this.lock_init();
+        this.cond_init();
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
             Robot passenger = new Robot(this);
             ROBOT_OBJECT[i] = passenger;
             STATION_ROBOTS[i] = new Thread(passenger);
+            
+        }
+        for(int i = 0; i < STATION_PASSENGERSWAITING; i++) {
             STATION_ROBOTS[i].start();
         }
-        this.lock_init();
-        this.cond_init();
+
     }
     
     public void Station_Load_Train(int TRAIN_AVAILABLESEATS) {
@@ -86,8 +90,9 @@ public class Station {
     }
     
     public void Station_Wait_For_Train() {
-
+        this.lock_acquire();
         this.cond_wait();
+        this.lock_release();
         this.Station_On_Board();
        
         
@@ -104,10 +109,11 @@ public class Station {
             Station_Wait_For_Train();
         }
         else {
-            int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS();
-            TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers++);
+            int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
+            TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
             System.out.println("A passenger boarded the train");
-            System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + "Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+            System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+            System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
         }
         this.lock_release();
         // Ultimately
@@ -126,19 +132,19 @@ public class Station {
         STATION_LOCK.unlock();
     }
     
-    public void cond_init() {
+    public  void cond_init() {
         STATION_CONDITION = STATION_LOCK.newCondition();
     }
     
     public void cond_wait() {
         try {
-            STATION_CONDITION.await();
+              STATION_CONDITION.await();
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void cond_signal() {
+    public  void cond_signal() {
         STATION_CONDITION.signal();
         
     }

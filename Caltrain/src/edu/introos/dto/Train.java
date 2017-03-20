@@ -62,11 +62,11 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
 
