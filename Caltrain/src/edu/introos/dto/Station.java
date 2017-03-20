@@ -29,7 +29,6 @@ public class Station {
     private Condition STATION_CONDITION;
     private ArrayList<Thread> STATION_ROBOTS;
     private ArrayList<Robot> ROBOT_OBJECT;
-    private ArrayList<Robot> DROP_OFF;
     private Semaphore STATION_MUTEX;
     
     
@@ -59,7 +58,6 @@ public class Station {
         this.STATION_HASTRAIN = false;
         this.STATION_NAME = STATION_NAME;
         this.ROBOT_OBJECT = new ArrayList();
-        this.DROP_OFF = new ArrayList();
         this.STATION_ROBOTS = new ArrayList();
         
         // Generate Passengers/Robots
@@ -136,7 +134,6 @@ public class Station {
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
-                    DROP_OFF.add(passenger);
                     ROBOT_OBJECT.remove(passenger);
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
