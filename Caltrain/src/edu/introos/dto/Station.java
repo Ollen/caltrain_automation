@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import edu.introos.services.NumberGenerator;
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -26,8 +27,9 @@ public class Station {
     private boolean STATION_HASTRAIN;         // Does the station have a train? 
     private Lock STATION_LOCK;
     private Condition STATION_CONDITION;
-    private Thread[] STATION_ROBOTS;
-    private Robot[] ROBOT_OBJECT;
+    private ArrayList<Thread> STATION_ROBOTS;
+    private ArrayList<Robot> ROBOT_OBJECT;
+    private ArrayList<Robot> DROP_OFF;
     private Semaphore STATION_MUTEX;
     
     
@@ -36,33 +38,39 @@ public class Station {
         
     }
     
+    private void GeneratePassengers(int STATION_PASSENGERSWAITING) {
+
+        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
+            //thread[i] = new Thread(new Robot());
+            Robot passenger = new Robot(this);
+            ROBOT_OBJECT.add(passenger);
+            STATION_ROBOTS.add(new Thread(passenger));
+            
+        }
+        for(Thread robot : STATION_ROBOTS) {
+            robot.start();
+        }
+    }
+    
     private void Station_Init(String STATION_NAME) {
         this.STATION_STATUS = "IDLE";
         this.TRAIN_ONSTATION = null;
         this.STATION_PASSENGERSWAITING = 0;
         this.STATION_HASTRAIN = false;
         this.STATION_NAME = STATION_NAME;
-        
+        this.ROBOT_OBJECT = new ArrayList();
+        this.DROP_OFF = new ArrayList();
+        this.STATION_ROBOTS = new ArrayList();
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
-        ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
-        STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
         this.lock_init();
         this.cond_init();
         this.mutex_init();
-        for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
-            //thread[i] = new Thread(new Robot());
-            Robot passenger = new Robot(this);
-            ROBOT_OBJECT[i] = passenger;
-            STATION_ROBOTS[i] = new Thread(passenger);
-            
-        }
-        for(int i = 0; i < STATION_PASSENGERSWAITING; i++) {
-            STATION_ROBOTS[i].start();
-        }
+        this.GeneratePassengers(STATION_PASSENGERSWAITING);
+        
 
     }
     
@@ -73,7 +81,9 @@ public class Station {
         // Start Critical Section
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
-            System.out.println("No passengers in " + this.getSTATION_NAME());                        
+            System.out.println("No passengers in " + this.getSTATION_NAME());
+            int influx = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+            this.GeneratePassengers(influx);
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
@@ -86,6 +96,7 @@ public class Station {
             
         }
         // End Critical Section
+        
         this.mutex_release();
         // Otherwise
       
@@ -125,6 +136,8 @@ public class Station {
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
+                    DROP_OFF.add(passenger);
+                    ROBOT_OBJECT.remove(passenger);
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                     System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());

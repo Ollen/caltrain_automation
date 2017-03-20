@@ -67,6 +67,7 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
                 System.out.println("==================================== ARRIVING ====================================");
                 System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + " STATION! ====================================" );
+                System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_PASSNGERSWAITING());
                 this.DropPassenger();
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 
