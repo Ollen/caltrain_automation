@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +19,7 @@ public class Train implements Runnable {
     private String TRAIN_STATUS;      // Domain: IDLE, TRAVELING, LOADING
     private int TRAIN_NOOFSEATS;      // Maximum number of seats in the train
     private int TRAIN_NOOFPASSENGERS; // Number of Passengers in the train
-    private int TRAIN_AVAILABLESEATS; // Computer by subtracting TRAIN_NOOFSEATS and TRAIN_AVAILABLESEATS
+    private Semaphore TRAIN_AVAILABLESEATS; // Computer by subtracting TRAIN_NOOFSEATS and TRAIN_AVAILABLESEATS
     private String TRAIN_NAME;        // Optional name of Train object
     private String TRAIN_DOORSTATUS;  // Domain: OPEN, CLOSED
     private boolean TRAIN_ISRUNNING; // Is it running?
@@ -27,12 +28,12 @@ public class Train implements Runnable {
     private ArrayList<Robot> TRAIN_DROPOFFS;
     private int TRAIN_WHERE;
     
-    public Train(int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
+    public Train(Semaphore TRAIN_AVAILABLESEATS, int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
         this.TRAIN_STATUS = "IDLE";
         this.TRAIN_NOOFSEATS = TRAIN_NOOFSEATS;
         this.TRAIN_NAME = TRAIN_NAME;
         this.TRAIN_NOOFPASSENGERS = 0;
-        this.TRAIN_AVAILABLESEATS = this.TRAIN_NOOFSEATS;
+        this.TRAIN_AVAILABLESEATS = TRAIN_AVAILABLESEATS;
         this.TRAIN_DOORSTATUS = "CLOSED";
         this.TRAIN_ISRUNNING = true;
         this.TRAIN_STATIONS = TRAIN_STATIONS;
@@ -148,14 +149,14 @@ public class Train implements Runnable {
      * @return the TRAIN_AVAILABLESEATS
      */
     public int getTRAIN_AVAILABLESEATS() {
-        TRAIN_AVAILABLESEATS = this.TRAIN_NOOFSEATS - this.TRAIN_NOOFPASSENGERS;
-        return TRAIN_AVAILABLESEATS;
+        
+        return TRAIN_AVAILABLESEATS.availablePermits();
     }
 
     /**
      * @param TRAIN_AVAILABLESEATS the TRAIN_AVAILABLESEATS to set
      */
-    public void setTRAIN_AVAILABLESEATS(int TRAIN_AVAILABLESEATS) {
+    public void setTRAIN_AVAILABLESEATS(Semaphore TRAIN_AVAILABLESEATS) {
         this.TRAIN_AVAILABLESEATS = TRAIN_AVAILABLESEATS;
     }
 

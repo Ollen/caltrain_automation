@@ -8,6 +8,7 @@ package edu.introos.main;
 import edu.introos.dto.Station;
 import edu.introos.dto.Train;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 /**
  *
@@ -22,7 +23,7 @@ public class Caltrain {
     static Thread[] trainThreads = new Thread[16];
     static Station[] stations = new Station[8];
     static int numOfTrains = 0;
-    
+    static Semaphore availableSeats;
     public static void main(String[] args) {
        String[] stationNames = {"Taft", "Magallanes", "Ayala", "Buendia", "Guadalupe", "Boni", "Shaw", "Ortigas"}; 
        Scanner sc = new Scanner(System.in);
@@ -77,6 +78,7 @@ public class Caltrain {
                     System.out.print("Number of Seats: ");
                     numOfSeats = Integer.parseInt(sc.nextLine());
                     if(numOfSeats > 0){
+                        availableSeats = new Semaphore(numOfSeats, true);
                         seats = true;
                     } else{
                         System.out.println("Please enter a positive number");
@@ -97,7 +99,7 @@ public class Caltrain {
                 }
             }
             //Create The Train
-            Train newTrain = new Train(numOfSeats, trainName, stations);
+            Train newTrain = new Train(availableSeats, numOfSeats, trainName, stations);
             trainThreads[numOfTrains] = new Thread(newTrain);
             trainThreads[numOfTrains].start();
             numOfTrains++;

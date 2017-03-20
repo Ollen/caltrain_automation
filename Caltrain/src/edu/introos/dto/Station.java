@@ -42,7 +42,7 @@ public class Station {
         this.STATION_PASSENGERSWAITING = 0;
         this.STATION_HASTRAIN = false;
         this.STATION_NAME = STATION_NAME;
-        this.STATION_MUTEX = new Semaphore(1);
+        
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
@@ -50,6 +50,9 @@ public class Station {
         // CREATE ROBOTS/PASENGERS
         ROBOT_OBJECT = new Robot[STATION_PASSENGERSWAITING];
         STATION_ROBOTS = new Thread[STATION_PASSENGERSWAITING];
+        this.lock_init();
+        this.cond_init();
+        this.mutex_init();
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
             Robot passenger = new Robot(this);
@@ -63,10 +66,10 @@ public class Station {
 
     }
     
-    public void Station_Load_Train(int TRAIN_AVAILABLESEATS) {
+    public synchronized void Station_Load_Train(int TRAIN_AVAILABLESEATS) {
         // Load Train
         
-        this.lock_acquire();
+        this.mutex_acquire();
         // Start Critical Section
         System.out.println(TRAIN_ONSTATION.getTRAIN_NAME() + " is arriving at " + this.getSTATION_NAME() + " station.");
         System.out.println("Train doors have opened!");
@@ -79,20 +82,24 @@ public class Station {
         }
         else {
             System.out.println("Passengers boarding!");
-            this.cond_broadcast();
+            this.notifyAll();
             
             
         }
         // End Critical Section
-        this.lock_release();
+        this.mutex_release();
         // Otherwise
       
     }
     
-    public void Station_Wait_For_Train(Robot passenger) {
-        this.lock_acquire();
-        this.cond_wait();
-        this.lock_release();
+    public synchronized void Station_Wait_For_Train(Robot passenger) {
+        this.mutex_acquire();
+        try {
+            wait();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.mutex_release();
         this.Station_On_Board(passenger);
        
         
@@ -100,13 +107,13 @@ public class Station {
     
     public void Station_On_Board(Robot passenger) {
         // Account all passengers if they are onboard
-        this.lock_acquire();
+        this.mutex_acquire();
         this.STATION_PASSENGERSWAITING = this.STATION_PASSENGERSWAITING--;
         try {
                 if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
                 //Wait for another train
 
-                this.lock_release();
+                this.mutex_release();
                 // Sleep again
                 Station_Wait_For_Train(passenger);
             }
@@ -117,7 +124,8 @@ public class Station {
                 System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                 System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                 System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
-                this.lock_release();
+                this.mutex_release();
+                
             }
         }
         finally {
@@ -128,6 +136,24 @@ public class Station {
         
         
     }
+    
+    public void mutex_init() {
+        this.STATION_MUTEX = new Semaphore(1);
+    }
+    
+    public void mutex_acquire() {
+        try {
+            this.STATION_MUTEX.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mutex_release() {
+        this.STATION_MUTEX.release();
+    }
+    
+   
     
     public void lock_init() {
         STATION_LOCK = new ReentrantLock();
