@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 public class Caltrain_GUI {
     
     static JFrame mainFrame;
+    static JFrame controlFrame;
     /**
      * @param args the command line arguments
      */
@@ -22,7 +23,9 @@ public class Caltrain_GUI {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
             mainFrame = new Frame();
+            controlFrame = new FrameControl();
             mainFrame.setVisible(true);
+            controlFrame.setVisible(true);
             
         }
     });

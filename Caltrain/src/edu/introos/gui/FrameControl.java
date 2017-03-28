@@ -12,19 +12,15 @@ import javax.swing.JFrame;
  *
  * @author Allendale
  */
-public class Frame extends JFrame {
-    public Frame(){
-        this.setTitle("Caltrain Automation: Semaphores");
-        this.setSize(1200,800);
-        this.setMinimumSize(new Dimension(800,600));
-        this.setLocationRelativeTo(null);
+public class FrameControl extends JFrame {
+    public FrameControl(){
+        this.setTitle("CalTrain Control Panel");
+        this.setSize(400,600);
+        this.setMinimumSize(new Dimension(400,600));
+        this.setMaximumSize(new Dimension(400,600));
+        this.setLocation(10, 10);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        this.add(new MainPanel());
+        this.add(new ControlPanel());
     }
-    
-    public Frame getFrame(){
-       return this;
-    }
-    
 }
