@@ -5,6 +5,7 @@
  */
 package edu.introos.gui;
 
+import edu.introos.main.Caltrain_X;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -24,9 +26,10 @@ import net.miginfocom.swing.MigLayout;
  * @author Allendale
  */
 public class ControlPanel extends JPanel implements ActionListener {
+   
+    Caltrain_X Caltrain;
     
     //Initialize Components
-    
     JPanel  addTrainPanel;
     
     JLabel  label_header,
@@ -47,8 +50,11 @@ public class ControlPanel extends JPanel implements ActionListener {
     Font labelFont = new Font("Tahoma", Font.PLAIN, 14);
     Font fieldFont = new Font("Segoe UI", Font.PLAIN, 16);
     Font buttonFont = new Font("Segoe UI", Font.BOLD, 16);
-    Font borderTitleFont = new Font("Segoe UI", Font.ITALIC + Font.BOLD, 16);    
+    Font borderTitleFont = new Font("Segoe UI", Font.ITALIC + Font.BOLD, 16);
+    //End of Fonts
+    
     public ControlPanel(){
+        Caltrain = new Caltrain_X();
         //Set the Layout
         this.setLayout(new MigLayout(""));
         //Build the Components
@@ -59,7 +65,7 @@ public class ControlPanel extends JPanel implements ActionListener {
     
     public void buildComponents(){
         addTrainPanel = new JPanel();
-        addTrainPanel.setLayout(new MigLayout("debug"));
+        addTrainPanel.setLayout(new MigLayout(""));
         addTrainPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Add a Train",
                 TitledBorder.LEFT, TitledBorder.TOP, borderTitleFont, Color.decode("#006158")));
@@ -90,6 +96,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         button_add_train.setFont(buttonFont);
         button_add_train.setForeground(Color.white);
         button_add_train.setBackground(Color.decode("#04bbaa"));
+        button_add_train.addActionListener(this);
         
     }
     
@@ -110,10 +117,60 @@ public class ControlPanel extends JPanel implements ActionListener {
         
         this.add(addTrainPanel, "pushx, growx");
     }
+    
+    public boolean checkAddTrain(String name, String seats){
+        String trainName = name.trim();
+        int trainSeats = 0;
+        
+        if(trainName.isEmpty() || trainName == null){
+            JOptionPane.showMessageDialog(ControlPanel.this, "Invalid Train Name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        try{
+            trainSeats = Integer.parseInt(seats);
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(ControlPanel.this, "Invalid Train Number Seat", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if(trainSeats <= 0){
+            JOptionPane.showMessageDialog(ControlPanel.this, "Please Enter a Positive Seat Number", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getSource() == button_add_train){
+            String name = textfield_train_name.getText();
+            String seats = textfield_train_seats.getText();
+            
+            
+            if(checkAddTrain(name, seats)){
+                if(Caltrain.numOfTrains == 16){
+                    JOptionPane.showMessageDialog(ControlPanel.this, "Maximum Train Limit", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                } else{
+                    int seatInt = Integer.parseInt(textfield_train_seats.getText());
+                    
+                    Caltrain.dispatchTrain(name.trim(), seatInt);
+                    Caltrain.numOfTrains ++;
+                    JOptionPane.showMessageDialog(ControlPanel.this, "Created a New Train", "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    textfield_train_name.setText("");
+                    textfield_train_seats.setText("");
+                    label_train_count.setText(Caltrain.numOfTrains + " out of 16");
+                        
+                }
+            }
+            
+        }
     }
     
 }
