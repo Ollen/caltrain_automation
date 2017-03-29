@@ -81,6 +81,7 @@ public class Station {
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
             int influx = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+            STATION_ROBOTS.removeAll(STATION_ROBOTS);
             this.GeneratePassengers(influx);
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
@@ -135,6 +136,7 @@ public class Station {
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
                     ROBOT_OBJECT.remove(passenger);
+                    
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                     System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());

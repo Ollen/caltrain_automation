@@ -30,7 +30,8 @@ public class ControlPanel extends JPanel implements ActionListener {
     Caltrain_X Caltrain;
     
     //Initialize Components
-    JPanel  addTrainPanel;
+    JPanel  addTrainPanel,
+            headerPanel;
     
     JLabel  label_header,
             label_train_num,
@@ -41,7 +42,8 @@ public class ControlPanel extends JPanel implements ActionListener {
     JTextField  textfield_train_name,
                 textfield_train_seats;
     JSeparator separator = new JSeparator();
-    JButton button_add_train;
+    JButton button_add_train,
+            button_exit_simulation;
     //End of Initialization
     
     //Fonts
@@ -56,7 +58,7 @@ public class ControlPanel extends JPanel implements ActionListener {
     public ControlPanel(){
         Caltrain = new Caltrain_X();
         //Set the Layout
-        this.setLayout(new MigLayout(""));
+        this.setLayout(new MigLayout("inset 20"));
         //Build the Components
         buildComponents();
         //Assemble the Components
@@ -64,6 +66,9 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
     
     public void buildComponents(){
+        headerPanel = new JPanel();
+        headerPanel.setLayout(new MigLayout(""));
+        
         addTrainPanel = new JPanel();
         addTrainPanel.setLayout(new MigLayout(""));
         addTrainPanel.setBorder(BorderFactory.createTitledBorder(
@@ -98,11 +103,18 @@ public class ControlPanel extends JPanel implements ActionListener {
         button_add_train.setBackground(Color.decode("#04bbaa"));
         button_add_train.addActionListener(this);
         
+        button_exit_simulation = new JButton("Exit Simulation");
+        button_exit_simulation.setFocusPainted(false);
+        button_exit_simulation.setFont(buttonFont);
+        button_exit_simulation.addActionListener(this);
+        
     }
     
     public void assembleComponents(){
-        this.add(label_header, "pushx, center, gaptop 20, wrap");
-        this.add(separator, "growx, wrap 20");
+        headerPanel.add(label_header, "pushx, center, gaptop 20, wrap");
+        headerPanel.add(separator, "growx, wrap 20");
+        this.add(headerPanel, "pushx, growx, dock north");
+        
         
         //Add Train Num
         this.add(label_train_num, "pushx, center, wrap");
@@ -115,7 +127,12 @@ public class ControlPanel extends JPanel implements ActionListener {
         addTrainPanel.add(textfield_train_seats, "growx, pushx,wrap 10");
         addTrainPanel.add(button_add_train, "span, center");
         
-        this.add(addTrainPanel, "pushx, growx");
+        
+        this.add(addTrainPanel, "pushx, growx, wrap 10");
+        this.add(button_exit_simulation, "dock south, w 650!, center, gaptop 10, gapbottom 10");
+        
+        //Add Station Navbar
+        this.add(new ControlStationPanel(), "dock west, gapright 20");
     }
     
     public boolean checkAddTrain(String name, String seats){
@@ -151,7 +168,6 @@ public class ControlPanel extends JPanel implements ActionListener {
             String name = textfield_train_name.getText();
             String seats = textfield_train_seats.getText();
             
-            
             if(checkAddTrain(name, seats)){
                 if(Caltrain.numOfTrains == 16){
                     JOptionPane.showMessageDialog(ControlPanel.this, "Maximum Train Limit", "Error",
@@ -170,6 +186,10 @@ public class ControlPanel extends JPanel implements ActionListener {
                 }
             }
             
+        }
+        
+        if(e.getSource() == button_exit_simulation){
+            System.exit(0);
         }
     }
     
