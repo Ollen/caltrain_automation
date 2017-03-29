@@ -72,7 +72,7 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000); //Delay in Travelling
                     TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
