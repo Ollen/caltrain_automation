@@ -5,6 +5,7 @@
  */
 package edu.introos.dto;
 
+import edu.introos.gui.ControlStationPanel;
 import edu.introos.services.NumberGenerator;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -76,6 +77,7 @@ public class Station {
         // Load Train
         
         this.mutex_acquire();
+        ControlStationPanel.setOccupied(this.STATION_NAME);
         // Start Critical Section
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
@@ -90,13 +92,16 @@ public class Station {
         }
         else {
             System.out.println("Passengers boarding!");
-            this.notifyAll();
-            
-            
+            this.notifyAll();      
         }
         // End Critical Section
-        
+        try {
+            Thread.sleep(5000); //Delay in Station
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.mutex_release();
+        ControlStationPanel.setFree(this.STATION_NAME);
         // Otherwise
       
     }
