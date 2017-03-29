@@ -18,6 +18,7 @@ public class FrameControl extends JFrame {
         this.setSize(800,1000);
         this.setMinimumSize(new Dimension(800,1000));
         this.setLocation(10, 10);
+        this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         this.add(new ControlPanel());

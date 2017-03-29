@@ -24,9 +24,6 @@ public class Caltrain_GUI {
         public void run() {
             mainFrame = new Frame();
             controlFrame = new FrameControl();
-            mainFrame.setVisible(true);
-            controlFrame.setVisible(true);
-            
         }
     });
     }
