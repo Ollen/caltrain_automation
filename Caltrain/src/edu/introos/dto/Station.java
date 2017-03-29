@@ -77,7 +77,7 @@ public class Station {
         // Load Train
         
         this.mutex_acquire();
-        ControlStationPanel.setOccupied(this.STATION_NAME);
+        ControlStationPanel.setOccupied(this.STATION_NAME, this.getTRAIN_ONSTATION().getTRAIN_NAME());
         // Start Critical Section
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
