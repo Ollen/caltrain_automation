@@ -30,7 +30,7 @@ public class ControlTrainPanel extends JPanel implements ActionListener {
     Font trainNumFont = new Font("Tahoma", Font.BOLD, 18);
     
     public ControlTrainPanel(){
-        this.setLayout(new MigLayout("", "[150, fill, push, grow]", "[150, fill, push, grow]"));
+        this.setLayout(new MigLayout("", "[150, fill, grow]", "[150, fill,  grow]"));
         this.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Train List",
                 TitledBorder.CENTER, TitledBorder.TOP));
