@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import edu.introos.gui.ControlStationPanel;
+import edu.introos.gui.ControlWaitingPanel;
 import edu.introos.services.NumberGenerator;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -63,6 +64,7 @@ public class Station {
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        ControlWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
         this.lock_init();
@@ -137,10 +139,12 @@ public class Station {
                             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     this.STATION_PASSENGERSWAITING--;
+                    ControlWaitingPanel.setWaiting(STATION_NAME, STATION_PASSENGERSWAITING);
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
                     ROBOT_OBJECT.remove(passenger);
+                    
                     
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());

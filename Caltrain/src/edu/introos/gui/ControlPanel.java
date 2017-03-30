@@ -33,6 +33,9 @@ public class ControlPanel extends JPanel implements ActionListener {
     JPanel  addTrainPanel,
             headerPanel;
     
+    ControlStationPanel stationPanel = new ControlStationPanel();
+    ControlWaitingPanel waitingPanel = new ControlWaitingPanel();
+    
     JLabel  label_header,
             label_train_num,
             label_train_count,
@@ -132,7 +135,8 @@ public class ControlPanel extends JPanel implements ActionListener {
         this.add(button_exit_simulation, "dock south, w 650!, center, gaptop 10, gapbottom 10");
         
         //Add Station Navbar
-        this.add(new ControlStationPanel(), "dock west, gapright 20");
+        this.add(waitingPanel, "dock west, gapright 20");
+        this.add(stationPanel, "dock west, gapright 20");
     }
     
     public boolean checkAddTrain(String name, String seats){

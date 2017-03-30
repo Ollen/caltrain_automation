@@ -138,7 +138,6 @@ public class Frame extends JFrame {
             
 
         state = state % 4;
-        System.out.println("x: " + x + " | y: " + y);
         
         g.drawImage(blueTrainSprites.get(state), 9 + x, 32 + y, null); // programmable
         repaint();
