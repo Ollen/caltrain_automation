@@ -6,6 +6,7 @@
 package edu.introos.dto;
 
 import edu.introos.gui.ControlTrainPanel;
+import edu.introos.main.Caltrain_X;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
@@ -67,16 +68,18 @@ public class Train implements Runnable {
 //                    TRAIN_STATIONS[TRAIN_WHERE].lock_release();
 //                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
 //                }
-                TRAIN_STATIONS[TRAIN_WHERE].setTRAIN_ONSTATION(this);
+                TRAIN_STATIONS[getTRAIN_WHERE()].setTRAIN_ONSTATION(this);
+                
                 System.out.println("==================================== ARRIVING ====================================");
-                System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME() + " STATION! ====================================" );
-                System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_PASSNGERSWAITING());
+                System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME() + " STATION! ====================================" );
+                System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_PASSNGERSWAITING());
                 this.DropPassenger();
-                TRAIN_STATIONS[TRAIN_WHERE].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
+                TRAIN_STATIONS[getTRAIN_WHERE()].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 
                 try {
+                    ControlTrainPanel.trainStatus.get(this.getTrainID()).setText("Status: Travelling to " + Caltrain_X.stationNames[(getTRAIN_WHERE() + 1) % 8]);
                     Thread.sleep(1000); //Delay in Travelling
-                    TRAIN_WHERE = (TRAIN_WHERE + 1) % 8;
+                    TRAIN_WHERE = (getTRAIN_WHERE() + 1) % 8;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -100,7 +103,7 @@ public class Train implements Runnable {
         TRAIN_DROPOFFS.clear();
         for (Robot passenger : TRAIN_PASSENGERS) {
             if(passenger.getROBOT_NOOFSTATION() == 0) {
-                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + TRAIN_STATIONS[TRAIN_WHERE].getSTATION_NAME());
+                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME());
                 this.TRAIN_NOOFPASSENGERS--;
                 TRAIN_DROPOFFS.add(passenger);
             }
@@ -152,7 +155,7 @@ public class Train implements Runnable {
      */
     public void setTRAIN_NOOFPASSENGERS(int TRAIN_NOOFPASSENGERS) {
         this.TRAIN_NOOFPASSENGERS = TRAIN_NOOFPASSENGERS;
-        ControlTrainPanel.trainSeats.get(trainID).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
+        ControlTrainPanel.trainSeats.get(getTrainID()).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
     }
 
     /**
@@ -214,6 +217,20 @@ public class Train implements Runnable {
      */
     public void setTRAIN_ISRUNNING(boolean TRAIN_ISRUNNING) {
         this.TRAIN_ISRUNNING = TRAIN_ISRUNNING;
+    }
+
+    /**
+     * @return the trainID
+     */
+    public int getTrainID() {
+        return trainID;
+    }
+
+    /**
+     * @return the TRAIN_WHERE
+     */
+    public int getTRAIN_WHERE() {
+        return TRAIN_WHERE;
     }
     
     

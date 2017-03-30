@@ -20,7 +20,7 @@ public class Caltrain_X {
     public static int numOfTrains = 0;
     static Semaphore availableSeats;
     
-    static String[] stationNames = {"Taft", "Magallanes", "Ayala", "Buendia", "Guadalupe", "Boni", "Shaw", "Ortigas"}; 
+    public static String[] stationNames = {"Taft", "Magallanes", "Ayala", "Buendia", "Guadalupe", "Boni", "Shaw", "Ortigas"}; 
     
     public Caltrain_X(){
         //Initialize the Stations
