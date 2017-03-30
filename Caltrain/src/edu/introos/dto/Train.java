@@ -5,6 +5,7 @@
  */
 package edu.introos.dto;
 
+import edu.introos.gui.ControlTrainPanel;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
@@ -27,8 +28,9 @@ public class Train implements Runnable {
     private ArrayList<Robot> TRAIN_PASSENGERS;
     private ArrayList<Robot> TRAIN_DROPOFFS;
     private int TRAIN_WHERE;
+    private int trainID;
     
-    public Train(Semaphore TRAIN_AVAILABLESEATS, int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS) {
+    public Train(Semaphore TRAIN_AVAILABLESEATS, int TRAIN_NOOFSEATS, String TRAIN_NAME, Station[] TRAIN_STATIONS, int id) {
         this.TRAIN_STATUS = "IDLE";
         this.TRAIN_NOOFSEATS = TRAIN_NOOFSEATS;
         this.TRAIN_NAME = TRAIN_NAME;
@@ -40,6 +42,7 @@ public class Train implements Runnable {
         this.TRAIN_WHERE = 0;
         this.TRAIN_PASSENGERS = new ArrayList();
         this.TRAIN_DROPOFFS = new ArrayList();
+        this.trainID = id;
 
     }
     
@@ -149,6 +152,7 @@ public class Train implements Runnable {
      */
     public void setTRAIN_NOOFPASSENGERS(int TRAIN_NOOFPASSENGERS) {
         this.TRAIN_NOOFPASSENGERS = TRAIN_NOOFPASSENGERS;
+        ControlTrainPanel.trainSeats.get(trainID).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
     }
 
     /**

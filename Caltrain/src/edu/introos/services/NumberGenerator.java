@@ -10,7 +10,7 @@ package edu.introos.services;
  * @author Mark Christian Sanchez
  */
 public class NumberGenerator {
-    public static final int MAX_INCOMING_PASSENGER = 200;
+    public static final int MAX_INCOMING_PASSENGER = 100;
     
     
     public static int GENERATE_PASSENGER_INFLUX() {

@@ -84,9 +84,10 @@ public class Station {
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
-            int influx = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+            STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+            ControlWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
             STATION_ROBOTS.removeAll(STATION_ROBOTS);
-            this.GeneratePassengers(influx);
+            this.GeneratePassengers(STATION_PASSENGERSWAITING);
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
@@ -98,7 +99,7 @@ public class Station {
         }
         // End Critical Section
         try {
-            Thread.sleep(5000); //Delay in Station
+            Thread.sleep(3000); //Delay in Station
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
         }

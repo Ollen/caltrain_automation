@@ -99,7 +99,7 @@ public class Caltrain {
                 }
             }
             //Create The Train
-            Train newTrain = new Train(availableSeats, numOfSeats, trainName, stations);
+            Train newTrain = new Train(availableSeats, numOfSeats, trainName, stations, Caltrain.numOfTrains);
             trainThreads[numOfTrains] = new Thread(newTrain);
             trainThreads[numOfTrains].start();
             numOfTrains++;

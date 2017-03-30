@@ -35,6 +35,7 @@ public class ControlPanel extends JPanel implements ActionListener {
     
     ControlStationPanel stationPanel = new ControlStationPanel();
     ControlWaitingPanel waitingPanel = new ControlWaitingPanel();
+    ControlTrainPanel trainPanel = new ControlTrainPanel();
     
     JLabel  label_header,
             label_train_num,
@@ -132,6 +133,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         
         
         this.add(addTrainPanel, "pushx, growx, wrap 10");
+        this.add(trainPanel, "push, grow");
         this.add(button_exit_simulation, "dock south, w 650!, center, gaptop 10, gapbottom 10");
         
         //Add Station Navbar
@@ -179,7 +181,9 @@ public class ControlPanel extends JPanel implements ActionListener {
                 } else{
                     int seatInt = Integer.parseInt(textfield_train_seats.getText());
                     
-                    Caltrain.dispatchTrain(name.trim(), seatInt);
+                    Caltrain.dispatchTrain(name.trim(), seatInt, Caltrain.numOfTrains);
+                    // Paint Train List
+                    
                     Caltrain.numOfTrains ++;
                     JOptionPane.showMessageDialog(ControlPanel.this, "Created a New Train", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
