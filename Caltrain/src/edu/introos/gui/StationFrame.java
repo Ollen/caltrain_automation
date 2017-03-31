@@ -31,6 +31,7 @@ public class StationFrame extends JFrame{
         
         this.add(stationPanel, "pushx, growx, wrap");
         this.add(robotPanel, "pushx, growx, wrap");
+        this.add(new ManageRobotPanel(), "pushx, center");
     }
     
 }
