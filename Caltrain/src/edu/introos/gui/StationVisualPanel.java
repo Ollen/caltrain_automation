@@ -45,7 +45,7 @@ public class StationVisualPanel extends JPanel implements ActionListener {
     
     
     public StationVisualPanel(){
-        this.setLayout(new MigLayout("", "[150,fill]", "[150,fill]"));
+        this.setLayout(new MigLayout("", "[150,fill, grow]", "[150,fill]"));
         this.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Stations",
                 TitledBorder.CENTER, TitledBorder.TOP));
@@ -126,13 +126,13 @@ public class StationVisualPanel extends JPanel implements ActionListener {
     
     public void assembleComponents(){
         this.add(TaftPanel, "cell 0 0");
-        this.add(MagallanesPanel, "cell 0 1");
-        this.add(AyalaPanel, "cell 0 2");
-        this.add(BuendiaPanel, "cell 0 3");
-        this.add(GuadalupePanel, "cell 0 4");
-        this.add(BoniPanel, "cell 0 5");
-        this.add(ShawPanel, "cell 0 6");
-        this.add(OrtigasPanel, "cell 0 7");
+        this.add(MagallanesPanel, "cell 1 0");
+        this.add(AyalaPanel, "cell 2 0");
+        this.add(BuendiaPanel, "cell 3 0");
+        this.add(GuadalupePanel, "cell 4 0");
+        this.add(BoniPanel, "cell 5 0");
+        this.add(ShawPanel, "cell 6 0");
+        this.add(OrtigasPanel, "cell 7 0");
     }
     
     public static void setOccupied(String stationName, String trainName){

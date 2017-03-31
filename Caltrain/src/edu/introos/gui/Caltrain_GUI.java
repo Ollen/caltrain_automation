@@ -14,15 +14,17 @@ import javax.swing.JFrame;
 
 public class Caltrain_GUI {
     
-    static JFrame mainFrame;
-    static JFrame controlFrame;
+    static JFrame stationFrame;
+    static JFrame trainFrame;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-            controlFrame = new TrainFrame();
+            stationFrame = new StationFrame();
+            trainFrame = new TrainFrame();
+            
         }
     });
     }
