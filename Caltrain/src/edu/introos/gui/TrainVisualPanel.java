@@ -21,7 +21,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Allendale
  */
-public class ControlTrainPanel extends JPanel implements ActionListener {
+public class TrainVisualPanel extends JPanel implements ActionListener {
 
     public static ArrayList<JPanel> trainPanels = new ArrayList(16);
     public static ArrayList<JLabel> trainName = new ArrayList(16);
@@ -33,7 +33,7 @@ public class ControlTrainPanel extends JPanel implements ActionListener {
     Font statusHead = new Font("Tahoma", Font.BOLD, 13);
     Font numFont = new Font("Trebuchet MS", Font.BOLD, 14);
     
-    public ControlTrainPanel(){
+    public TrainVisualPanel(){
         this.setLayout(new MigLayout("", "[150, fill, grow]", "[150, fill,  grow]"));
         this.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Train List",

@@ -13,9 +13,9 @@ import javax.swing.JScrollPane;
  *
  * @author Allendale
  */
-public class FrameControl extends JFrame {
-    JScrollPane jsp = new JScrollPane(new ControlPanel());
-    public FrameControl(){
+public class TrainFrame extends JFrame {
+    JScrollPane jsp = new JScrollPane(new TrainControlPanel());
+    public TrainFrame(){
         this.setTitle("CalTrain Train Manager");
         this.setSize(1050,750);
         this.setMinimumSize(new Dimension(1050, 750));

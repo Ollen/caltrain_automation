@@ -25,7 +25,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Allendale
  */
-public class ControlPanel extends JPanel implements ActionListener {
+public class TrainControlPanel extends JPanel implements ActionListener {
    
     Caltrain_X Caltrain;
     
@@ -34,9 +34,9 @@ public class ControlPanel extends JPanel implements ActionListener {
             headerPanel,
             sidePanel;
     
-    ControlStationPanel stationPanel = new ControlStationPanel();
-    ControlWaitingPanel waitingPanel = new ControlWaitingPanel();
-    ControlTrainPanel trainPanel = new ControlTrainPanel();
+    StationVisualPanel stationPanel = new StationVisualPanel();
+    RobotWaitingPanel waitingPanel = new RobotWaitingPanel();
+    TrainVisualPanel trainPanel = new TrainVisualPanel();
     
     JLabel  label_header,
             label_train_num,
@@ -60,7 +60,7 @@ public class ControlPanel extends JPanel implements ActionListener {
     Font borderTitleFont = new Font("Segoe UI", Font.ITALIC + Font.BOLD, 16);
     //End of Fonts
     
-    public ControlPanel(){
+    public TrainControlPanel(){
         Caltrain = new Caltrain_X();
         //Set the Layout
         this.setLayout(new MigLayout("inset 20"));
@@ -152,7 +152,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         int trainSeats = 0;
         
         if(trainName.isEmpty() || trainName == null){
-            JOptionPane.showMessageDialog(ControlPanel.this, "Invalid Train Name", "Error",
+            JOptionPane.showMessageDialog(TrainControlPanel.this, "Invalid Train Name", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -160,13 +160,13 @@ public class ControlPanel extends JPanel implements ActionListener {
         try{
             trainSeats = Integer.parseInt(seats);
         } catch(Exception ex){
-            JOptionPane.showMessageDialog(ControlPanel.this, "Invalid Train Number Seat", "Error",
+            JOptionPane.showMessageDialog(TrainControlPanel.this, "Invalid Train Number Seat", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
         if(trainSeats <= 0){
-            JOptionPane.showMessageDialog(ControlPanel.this, "Please Enter a Positive Seat Number", "Error",
+            JOptionPane.showMessageDialog(TrainControlPanel.this, "Please Enter a Positive Seat Number", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -182,7 +182,7 @@ public class ControlPanel extends JPanel implements ActionListener {
             
             if(checkAddTrain(name, seats)){
                 if(Caltrain.numOfTrains == 16){
-                    JOptionPane.showMessageDialog(ControlPanel.this, "Maximum Train Limit", "Error",
+                    JOptionPane.showMessageDialog(TrainControlPanel.this, "Maximum Train Limit", "Error",
                     JOptionPane.ERROR_MESSAGE);
                 } else{
                     int seatInt = Integer.parseInt(textfield_train_seats.getText());
@@ -191,7 +191,7 @@ public class ControlPanel extends JPanel implements ActionListener {
                     // Paint Train List
                     
                     Caltrain.numOfTrains ++;
-                    JOptionPane.showMessageDialog(ControlPanel.this, "Created a New Train", "Success",
+                    JOptionPane.showMessageDialog(TrainControlPanel.this, "Created a New Train", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
                     textfield_train_name.setText("");
                     textfield_train_seats.setText("");

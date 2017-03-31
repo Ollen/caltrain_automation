@@ -5,7 +5,7 @@
  */
 package edu.introos.dto;
 
-import edu.introos.gui.ControlTrainPanel;
+import edu.introos.gui.TrainVisualPanel;
 import edu.introos.main.Caltrain_X;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -77,7 +77,7 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[getTRAIN_WHERE()].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 
                 try {
-                    ControlTrainPanel.trainStatus.get(this.getTrainID()).setText("Travelling to " + Caltrain_X.stationNames[(getTRAIN_WHERE() + 1) % 8]);
+                    TrainVisualPanel.trainStatus.get(this.getTrainID()).setText("Travelling to " + Caltrain_X.stationNames[(getTRAIN_WHERE() + 1) % 8]);
                     Thread.sleep(1000); //Delay in Travelling
                     TRAIN_WHERE = (getTRAIN_WHERE() + 1) % 8;
                 } catch (InterruptedException ex) {
@@ -155,7 +155,7 @@ public class Train implements Runnable {
      */
     public void setTRAIN_NOOFPASSENGERS(int TRAIN_NOOFPASSENGERS) {
         this.TRAIN_NOOFPASSENGERS = TRAIN_NOOFPASSENGERS;
-        ControlTrainPanel.trainSeats.get(getTrainID()).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
+        TrainVisualPanel.trainSeats.get(getTrainID()).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
     }
 
     /**

@@ -7,7 +7,7 @@ package edu.introos.main;
 
 import edu.introos.dto.Station;
 import edu.introos.dto.Train;
-import edu.introos.gui.ControlTrainPanel;
+import edu.introos.gui.TrainVisualPanel;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -36,10 +36,10 @@ public class Caltrain_X {
         //Create The Train
         Train newTrain = new Train(availableSeats, seats, name, stations, id);
         //Paint Train List
-        ControlTrainPanel.trainName.get(numOfTrains).setText(newTrain.getTRAIN_NAME());
-        ControlTrainPanel.trainSeats.get(numOfTrains).setText(newTrain.getTRAIN_NOOFPASSENGERS() + "/" + newTrain.getTRAIN_NOOFSEATS());
-        ControlTrainPanel.trainStatusHead.get(numOfTrains).setText("<html><u>Status:</u></html>");
-        ControlTrainPanel.trainStatus.get(numOfTrains).setText("");
+        TrainVisualPanel.trainName.get(numOfTrains).setText(newTrain.getTRAIN_NAME());
+        TrainVisualPanel.trainSeats.get(numOfTrains).setText(newTrain.getTRAIN_NOOFPASSENGERS() + "/" + newTrain.getTRAIN_NOOFSEATS());
+        TrainVisualPanel.trainStatusHead.get(numOfTrains).setText("<html><u>Status:</u></html>");
+        TrainVisualPanel.trainStatus.get(numOfTrains).setText("");
         
         trainThreads[numOfTrains] = new Thread(newTrain);
         trainThreads[numOfTrains].start();

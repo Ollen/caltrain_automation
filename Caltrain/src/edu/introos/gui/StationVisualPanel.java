@@ -20,7 +20,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Allendale
  */
-public class ControlStationPanel extends JPanel implements ActionListener {
+public class StationVisualPanel extends JPanel implements ActionListener {
     static JPanel  
             TaftPanel,
             MagallanesPanel,
@@ -44,7 +44,7 @@ public class ControlStationPanel extends JPanel implements ActionListener {
     Font stationFont = new Font("Georgia", Font.PLAIN, 20);
     
     
-    public ControlStationPanel(){
+    public StationVisualPanel(){
         this.setLayout(new MigLayout("", "[150,fill]", "[150,fill]"));
         this.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Stations",

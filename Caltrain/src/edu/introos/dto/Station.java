@@ -5,9 +5,9 @@
  */
 package edu.introos.dto;
 
-import edu.introos.gui.ControlStationPanel;
-import edu.introos.gui.ControlTrainPanel;
-import edu.introos.gui.ControlWaitingPanel;
+import edu.introos.gui.StationVisualPanel;
+import edu.introos.gui.TrainVisualPanel;
+import edu.introos.gui.RobotWaitingPanel;
 import edu.introos.main.Caltrain_X;
 import edu.introos.services.NumberGenerator;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class Station {
         
         // Generate Passengers/Robots
         STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
-        ControlWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
+        RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
         this.lock_init();
@@ -81,13 +81,13 @@ public class Station {
         // Load Train
         
         this.mutex_acquire();
-        ControlStationPanel.setOccupied(this.STATION_NAME, this.getTRAIN_ONSTATION().getTRAIN_NAME());
+        StationVisualPanel.setOccupied(this.STATION_NAME, this.getTRAIN_ONSTATION().getTRAIN_NAME());
         // Start Critical Section
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
             STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
-            ControlWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
+            RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
             STATION_ROBOTS.removeAll(STATION_ROBOTS);
             this.GeneratePassengers(STATION_PASSENGERSWAITING);
         }
@@ -101,13 +101,13 @@ public class Station {
         }
         // End Critical Section
         try {
-            ControlTrainPanel.trainStatus.get(TRAIN_ONSTATION.getTrainID()).setText("Arrived at " + Caltrain_X.stationNames[TRAIN_ONSTATION.getTRAIN_WHERE()]);
+            TrainVisualPanel.trainStatus.get(TRAIN_ONSTATION.getTrainID()).setText("Arrived at " + Caltrain_X.stationNames[TRAIN_ONSTATION.getTRAIN_WHERE()]);
             Thread.sleep(3000); //Delay in Station
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.mutex_release();
-        ControlStationPanel.setFree(this.STATION_NAME);
+        StationVisualPanel.setFree(this.STATION_NAME);
         // Otherwise
       
     }
@@ -143,7 +143,7 @@ public class Station {
                             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     this.STATION_PASSENGERSWAITING--;
-                    ControlWaitingPanel.setWaiting(STATION_NAME, STATION_PASSENGERSWAITING);
+                    RobotWaitingPanel.setWaiting(STATION_NAME, STATION_PASSENGERSWAITING);
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);

@@ -22,7 +22,7 @@ public class Caltrain_GUI {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-            controlFrame = new FrameControl();
+            controlFrame = new TrainFrame();
         }
     });
     }

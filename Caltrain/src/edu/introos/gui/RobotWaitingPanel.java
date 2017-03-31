@@ -20,7 +20,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Allendale
  */
-public class ControlWaitingPanel extends JPanel implements ActionListener {
+public class RobotWaitingPanel extends JPanel implements ActionListener {
     static JPanel  
             TaftPanel,
             MagallanesPanel,
@@ -44,7 +44,7 @@ public class ControlWaitingPanel extends JPanel implements ActionListener {
     //Fonts
     Font stationFont = new Font("Georgia", Font.PLAIN, 20);
     
-    public ControlWaitingPanel(){
+    public RobotWaitingPanel(){
         this.setLayout(new MigLayout("", "[150,fill]", "[150,fill]"));
         this.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Waiting",
