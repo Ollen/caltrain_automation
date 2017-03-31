@@ -5,6 +5,7 @@
  */
 package edu.introos.gui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,8 +27,11 @@ public class ControlTrainPanel extends JPanel implements ActionListener {
     public static ArrayList<JLabel> trainName = new ArrayList(16);
     public static ArrayList<JLabel> trainSeats = new ArrayList(16);
     public static ArrayList<JLabel> trainStatus = new ArrayList(16);
-            
+    public static ArrayList<JLabel> trainStatusHead = new ArrayList(16);
+    
     Font trainNumFont = new Font("Tahoma", Font.BOLD, 18);
+    Font statusHead = new Font("Tahoma", Font.BOLD, 13);
+    Font numFont = new Font("Trebuchet MS", Font.BOLD, 14);
     
     public ControlTrainPanel(){
         this.setLayout(new MigLayout("", "[150, fill, grow]", "[150, fill,  grow]"));
@@ -50,8 +54,11 @@ public class ControlTrainPanel extends JPanel implements ActionListener {
             trainName.get(i).setFont(trainNumFont);
             
             trainSeats.add(new JLabel(""));
+            trainSeats.get(i).setFont(numFont);
             trainStatus.add(new JLabel(""));
-            
+            trainStatus.get(i).setForeground(Color.red);
+            trainStatusHead.add(new JLabel(""));
+            trainStatusHead.get(i).setFont(statusHead);
         }
     }
     
@@ -60,7 +67,9 @@ public class ControlTrainPanel extends JPanel implements ActionListener {
         for(int i = 0 ; i < 16; i++){
             trainPanels.get(i).add(trainName.get(i), "pushx, center, wrap 5");
             trainPanels.get(i).add(trainSeats.get(i), "pushx, center, wrap");
-            trainPanels.get(i).add(trainStatus.get(i), "pushx, center");
+            trainPanels.get(i).add(trainStatusHead.get(i), "pushx, center, wrap");
+            trainPanels.get(i).add(trainStatus.get(i), "pushx, center, wrap");
+            
             this.add(trainPanels.get(i), "cell " + i%4 + " " + i/4);
         }
         

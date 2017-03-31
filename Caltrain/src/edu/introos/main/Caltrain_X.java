@@ -38,7 +38,8 @@ public class Caltrain_X {
         //Paint Train List
         ControlTrainPanel.trainName.get(numOfTrains).setText(newTrain.getTRAIN_NAME());
         ControlTrainPanel.trainSeats.get(numOfTrains).setText(newTrain.getTRAIN_NOOFPASSENGERS() + "/" + newTrain.getTRAIN_NOOFSEATS());
-        ControlTrainPanel.trainStatus.get(numOfTrains).setText("Status: ");
+        ControlTrainPanel.trainStatusHead.get(numOfTrains).setText("<html><u>Status:</u></html>");
+        ControlTrainPanel.trainStatus.get(numOfTrains).setText("");
         
         trainThreads[numOfTrains] = new Thread(newTrain);
         trainThreads[numOfTrains].start();

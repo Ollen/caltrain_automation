@@ -31,7 +31,8 @@ public class ControlPanel extends JPanel implements ActionListener {
     
     //Initialize Components
     JPanel  addTrainPanel,
-            headerPanel;
+            headerPanel,
+            sidePanel;
     
     ControlStationPanel stationPanel = new ControlStationPanel();
     ControlWaitingPanel waitingPanel = new ControlWaitingPanel();
@@ -79,7 +80,9 @@ public class ControlPanel extends JPanel implements ActionListener {
                 BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Add a Train",
                 TitledBorder.LEFT, TitledBorder.TOP, borderTitleFont, Color.decode("#006158")));
         
-        label_header = new JLabel("Control Panel");
+        sidePanel = new JPanel(new MigLayout());
+        
+        label_header = new JLabel("Train Manager");
         label_header.setFont(headerFont);
         
         label_train_num = new JLabel("Active Trains");
@@ -116,13 +119,13 @@ public class ControlPanel extends JPanel implements ActionListener {
     
     public void assembleComponents(){
         headerPanel.add(label_header, "pushx, center, gaptop 20, wrap");
-        headerPanel.add(separator, "growx, wrap 20");
-        this.add(headerPanel, "pushx, growx, dock north");
+        headerPanel.add(separator, "growx, wrap 20, wrap");
+        sidePanel.add(headerPanel, "pushx, growx, wrap");
         
         
         //Add Train Num
-        this.add(label_train_num, "pushx, center, wrap");
-        this.add(label_train_count, "pushx, center, wrap 20");
+        //this.add(label_train_num, "pushx, center, wrap");
+        //this.add(label_train_count, "pushx, center, wrap 20");
         
         //Add Train information input
         addTrainPanel.add(label_train_name, "");
@@ -131,14 +134,17 @@ public class ControlPanel extends JPanel implements ActionListener {
         addTrainPanel.add(textfield_train_seats, "growx, pushx,wrap 10");
         addTrainPanel.add(button_add_train, "span, center");
         
+        //this.add(addTrainPanel, "pushx, growx, wrap 10");
         
-        this.add(addTrainPanel, "pushx, growx, wrap 10");
-        this.add(trainPanel, "push, grow");
-        this.add(button_exit_simulation, "dock south, w 650!, center, gaptop 10, gapbottom 10");
+        sidePanel.add(label_train_num, "pushx, center, wrap");
+        sidePanel.add(label_train_count, "pushx, center, wrap 20");
+        sidePanel.add(addTrainPanel, "pushx, growx");
+        this.add(sidePanel, "dock west");
         
-        //Add Station Navbar
-        this.add(waitingPanel, "dock west, gapright 20");
-        this.add(stationPanel, "dock west, gapright 20");
+        this.add(trainPanel, "center, grow, push");
+        //this.add(button_exit_simulation, "dock south, w 650!, center, gaptop 10, gapbottom 10");
+        
+        
     }
     
     public boolean checkAddTrain(String name, String seats){

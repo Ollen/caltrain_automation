@@ -101,7 +101,7 @@ public class Station {
         }
         // End Critical Section
         try {
-            ControlTrainPanel.trainStatus.get(TRAIN_ONSTATION.getTrainID()).setText("Status: Arrived at " + Caltrain_X.stationNames[TRAIN_ONSTATION.getTRAIN_WHERE()]);
+            ControlTrainPanel.trainStatus.get(TRAIN_ONSTATION.getTrainID()).setText("Arrived at " + Caltrain_X.stationNames[TRAIN_ONSTATION.getTRAIN_WHERE()]);
             Thread.sleep(3000); //Delay in Station
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
