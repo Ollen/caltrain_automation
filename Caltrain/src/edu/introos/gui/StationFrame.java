@@ -21,8 +21,8 @@ public class StationFrame extends JFrame{
     
     public StationFrame(){
         this.setTitle("CalTrain Station Manager");
-        this.setSize(1200,450);
-        this.setMinimumSize(new Dimension(1200, 400));
+        this.setSize(1200,600);
+        this.setMinimumSize(new Dimension(1200, 600));
         this.setLocation(10,10);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

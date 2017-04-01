@@ -6,12 +6,14 @@
 package edu.introos.gui;
 
 import edu.introos.main.Caltrain_X;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -35,6 +37,8 @@ public class ManageRobotPanel extends JPanel implements ActionListener {
     
     JButton     button_add_passengers;
     
+    Font labelFont = new Font("Trebuchet MS", Font.PLAIN + Font.BOLD, 14);
+    
     
     public ManageRobotPanel(){
         this.setLayout(new MigLayout("", "[]20[]", ""));
@@ -55,8 +59,12 @@ public class ManageRobotPanel extends JPanel implements ActionListener {
         label_station_source = new JLabel("Passenger Source");
         label_station_dest = new JLabel("Passenger Destination");
         label_passenger_num = new JLabel("Passenger Spawn Number");
+        label_station_source.setFont(labelFont);
+        label_station_dest.setFont(labelFont);
+        label_passenger_num.setFont(labelFont);
         
         button_add_passengers = new JButton("Add Passengers");
+        button_add_passengers.addActionListener(this);
     }
     
     public void assembleComponents(){
@@ -71,10 +79,52 @@ public class ManageRobotPanel extends JPanel implements ActionListener {
         this.add(button_add_passengers, "pushx, growx, span");
        
     }
+    
+    public boolean checkPassengerInput(){
+        int source = combo_station_source.getSelectedIndex();
+        int destination = combo_station_dest.getSelectedIndex();
+        int passenger_num = 0;
+        
+        try{
+            passenger_num = Integer.parseInt(text_passenger_num.getText());
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(ManageRobotPanel.this, "Invalid Passenger Num", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        
+        return true;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(e.getSource() == button_add_passengers){
+            if(checkPassengerInput()){
+                String string_source = (String)combo_station_source.getSelectedItem();
+                String string_destination = (String)combo_station_dest.getSelectedItem();
+                String string_passenger_num = text_passenger_num.getText();
+                
+                int source = combo_station_source.getSelectedIndex();
+                int destination = combo_station_dest.getSelectedIndex();
+                int passenger_num = Integer.parseInt(text_passenger_num.getText());
+                
+                if(source < destination){
+                    destination = (destination - source) - 1;
+                } else if(source > destination){
+                    destination = (7 - source) + destination;
+                } else if(source == destination){
+                    destination = 7;
+                }
+                
+                Caltrain_X.stations[source].GeneratePassengers(passenger_num, destination);
+                
+                JOptionPane.showMessageDialog(ManageRobotPanel.this, "Successfully added " + string_passenger_num
+                        + " Passenger in " + string_source + " going to " + string_destination , "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        
     }
     
 }

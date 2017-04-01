@@ -18,7 +18,7 @@ public class Robot implements Runnable {
     private String ROBOT_STATUS; // Stasuses: 'WAITING' & 'ONBOARD'
     private int ROBOT_NOOFSTATION; // Max of 7 stations
     private final Station ROBOT_STATION;
-    public Robot(Station ROBOT_STATION){
+    public Robot(Station ROBOT_STATION, int ROBOT_NOOFSTATION){
         //INCREMENT ROBOT NUM
         TOTAL_ROBOT_NUM++;
         // GENERATE RANDOM NAME
@@ -27,8 +27,9 @@ public class Robot implements Runnable {
         // SET STATUS TO WAITING
         this.ROBOT_STATUS = "WAITING";
         // GENERATE RANDOM STATION DESTINATION
-        Random rand = new Random();
-        this.ROBOT_NOOFSTATION = rand.nextInt(7) + 1;
+        //Random rand = new Random();
+        //this.ROBOT_NOOFSTATION = rand.nextInt(7) + 1;
+        this.ROBOT_NOOFSTATION = ROBOT_NOOFSTATION;
         this.ROBOT_STATION = ROBOT_STATION;
     }
 

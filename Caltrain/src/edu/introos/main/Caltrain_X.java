@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  */
 public class Caltrain_X {
     static Thread[] trainThreads = new Thread[16];
-    static Station[] stations = new Station[8];
+    public static Station[] stations = new Station[8];
     public static int numOfTrains = 0;
     static Semaphore availableSeats;
     

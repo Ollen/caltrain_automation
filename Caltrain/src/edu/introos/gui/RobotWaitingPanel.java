@@ -21,7 +21,7 @@ import net.miginfocom.swing.MigLayout;
  * @author Allendale
  */
 public class RobotWaitingPanel extends JPanel implements ActionListener {
-    static JPanel  
+    public static JPanel  
             TaftPanel,
             MagallanesPanel,
             AyalaPanel,
@@ -31,7 +31,7 @@ public class RobotWaitingPanel extends JPanel implements ActionListener {
             ShawPanel,
             OrtigasPanel;
     
-    static JLabel  label_taft_waiting,
+    public static JLabel  label_taft_waiting,
             label_magallanes_waiting,
             label_ayala_waiting,
             label_buendia_waiting,
@@ -57,28 +57,28 @@ public class RobotWaitingPanel extends JPanel implements ActionListener {
     }
     
     public void buildComponents(){
-        label_taft_waiting = new JLabel("");
+        label_taft_waiting = new JLabel("0");
         label_taft_waiting.setFont(stationFont);
         
-        label_magallanes_waiting = new JLabel("");
+        label_magallanes_waiting = new JLabel("0");
         label_magallanes_waiting.setFont(stationFont);
         
-        label_ayala_waiting = new JLabel("");
+        label_ayala_waiting = new JLabel("0");
         label_ayala_waiting.setFont(stationFont);
         
-        label_buendia_waiting = new JLabel("");
+        label_buendia_waiting = new JLabel("0");
         label_buendia_waiting.setFont(stationFont);
         
-        label_guadalupe_waiting = new JLabel("");
+        label_guadalupe_waiting = new JLabel("0");
         label_guadalupe_waiting.setFont(stationFont);
         
-        label_boni_waiting = new JLabel("");
+        label_boni_waiting = new JLabel("0");
         label_boni_waiting.setFont(stationFont);
         
-        label_shaw_waiting = new JLabel("");
+        label_shaw_waiting = new JLabel("0");
         label_shaw_waiting.setFont(stationFont);
         
-        label_ortigas_waiting = new JLabel("");
+        label_ortigas_waiting = new JLabel("0");
         label_ortigas_waiting.setFont(stationFont);
         
         TaftPanel = new JPanel(new MigLayout());

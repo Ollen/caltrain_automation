@@ -41,18 +41,22 @@ public class Station {
         
     }
     
-    private void GeneratePassengers(int STATION_PASSENGERSWAITING) {
-
+    public void GeneratePassengers(int STATION_PASSENGERSWAITING, int station_destination) {
+        this.STATION_PASSENGERSWAITING += STATION_PASSENGERSWAITING;
+        RobotWaitingPanel.setWaiting(this.STATION_NAME, this.STATION_PASSENGERSWAITING);
+        
         for(int i = 0; i < STATION_PASSENGERSWAITING; i++){
             //thread[i] = new Thread(new Robot());
-            Robot passenger = new Robot(this);
+            Robot passenger = new Robot(this, station_destination);
             ROBOT_OBJECT.add(passenger);
             STATION_ROBOTS.add(new Thread(passenger));
-            
+            STATION_ROBOTS.get(STATION_ROBOTS.size() - 1).start();            
         }
-        for(Thread robot : STATION_ROBOTS) {
-            robot.start();
-        }
+        
+        System.out.println(STATION_NAME + ": " + this.STATION_PASSENGERSWAITING + " Passengers");
+        //for(Thread robot : STATION_ROBOTS) {
+        //    robot.start();
+        //}
     }
     
     private void Station_Init(String STATION_NAME) {
@@ -65,14 +69,14 @@ public class Station {
         this.STATION_ROBOTS = new ArrayList();
         
         // Generate Passengers/Robots
-        STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
-        RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
+        //STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+        //RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
         // CREATE ROBOTS/PASENGERS
         this.lock_init();
         this.cond_init();
         this.mutex_init();
-        this.GeneratePassengers(STATION_PASSENGERSWAITING);
+        //this.GeneratePassengers(STATION_PASSENGERSWAITING);
         
 
     }
@@ -86,10 +90,10 @@ public class Station {
         System.out.println("Train doors have opened!");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
-            STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
+            //STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
             RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
-            STATION_ROBOTS.removeAll(STATION_ROBOTS);
-            this.GeneratePassengers(STATION_PASSENGERSWAITING);
+            //STATION_ROBOTS.removeAll(STATION_ROBOTS);
+            //this.GeneratePassengers(STATION_PASSENGERSWAITING);
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
@@ -147,19 +151,23 @@ public class Station {
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
                     TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
                     TRAIN_ONSTATION.AddPassenger(passenger);
+                    
                     ROBOT_OBJECT.remove(passenger);
+                   
                     
                     
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                     System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    TrainVisualPanel.trainSeats.get(TRAIN_ONSTATION.getTrainID()).setText(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + "/" + TRAIN_ONSTATION.getTRAIN_NOOFSEATS());
                     this.mutex_release();
                 
             }
         }
         finally {
             
-            // Ultimately
+            System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
         }
         
         

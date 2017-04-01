@@ -75,7 +75,7 @@ public class Train implements Runnable {
                 System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_PASSNGERSWAITING());
                 this.DropPassenger();
                 TRAIN_STATIONS[getTRAIN_WHERE()].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
-                
+                System.out.println(this.TRAIN_NOOFPASSENGERS);
                 try {
                     TrainVisualPanel.trainStatus.get(this.getTrainID()).setText("Travelling to " + Caltrain_X.stationNames[(getTRAIN_WHERE() + 1) % 8]);
                     Thread.sleep(1000); //Delay in Travelling
@@ -103,7 +103,8 @@ public class Train implements Runnable {
         TRAIN_DROPOFFS.clear();
         for (Robot passenger : TRAIN_PASSENGERS) {
             if(passenger.getROBOT_NOOFSTATION() == 0) {
-                System.out.println("It's " + passenger.getROBOT_NAME() + "'s destination, dropping off from " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME());
+                System.out.println("It's " + passenger.getROBOT_NAME()+ "[" + this.TRAIN_NOOFPASSENGERS +"]" + "'s destination, dropping off from " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME());
+                System.out.println(this.TRAIN_NOOFPASSENGERS);
                 this.TRAIN_NOOFPASSENGERS--;
                 TRAIN_DROPOFFS.add(passenger);
             }
@@ -111,6 +112,7 @@ public class Train implements Runnable {
                 passenger.UpdateDestination();
             }
         }
+        TrainVisualPanel.trainSeats.get(this.trainID).setText(this.TRAIN_NOOFPASSENGERS + "/" + this.TRAIN_NOOFSEATS);
         TRAIN_PASSENGERS.removeAll(TRAIN_DROPOFFS);
         TRAIN_AVAILABLESEATS.release(TRAIN_DROPOFFS.size());
     }
@@ -155,7 +157,6 @@ public class Train implements Runnable {
      */
     public void setTRAIN_NOOFPASSENGERS(int TRAIN_NOOFPASSENGERS) {
         this.TRAIN_NOOFPASSENGERS = TRAIN_NOOFPASSENGERS;
-        TrainVisualPanel.trainSeats.get(getTrainID()).setText((this.TRAIN_NOOFPASSENGERS - 1) + "/" + this.TRAIN_NOOFSEATS);
     }
 
     /**
