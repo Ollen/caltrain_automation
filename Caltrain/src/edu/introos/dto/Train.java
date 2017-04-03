@@ -73,6 +73,7 @@ public class Train implements Runnable {
                 System.out.println("==================================== ARRIVING ====================================");
                 System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME() + " STATION! ====================================" );
                 System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_PASSNGERSWAITING());
+                System.out.println(this.TRAIN_NOOFPASSENGERS + "/" + this.TRAIN_NOOFSEATS);
                 this.DropPassenger();
                 TRAIN_STATIONS[getTRAIN_WHERE()].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 System.out.println(this.TRAIN_NOOFPASSENGERS);
@@ -156,7 +157,11 @@ public class Train implements Runnable {
      * @param TRAIN_NOOFPASSENGERS the TRAIN_NOOFPASSENGERS to set
      */
     public void setTRAIN_NOOFPASSENGERS(int TRAIN_NOOFPASSENGERS) {
+        System.out.println(this.TRAIN_NOOFPASSENGERS + "*****" + TRAIN_NOOFPASSENGERS);
+        System.out.println("==================================");
         this.TRAIN_NOOFPASSENGERS = TRAIN_NOOFPASSENGERS;
+        System.out.println(this.TRAIN_NOOFPASSENGERS + "&&&&&");
+        TrainVisualPanel.trainSeats.get(this.getTrainID()).setText(this.getTRAIN_NOOFPASSENGERS() + "/" + this.getTRAIN_NOOFSEATS());
     }
 
     /**

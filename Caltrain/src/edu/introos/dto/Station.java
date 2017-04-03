@@ -101,6 +101,7 @@ public class Station {
         }
         else {
             System.out.println("Passengers boarding!");
+            System.out.println(this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
             this.notifyAll();      
         }
         // End Critical Section
@@ -124,34 +125,47 @@ public class Station {
         } catch (InterruptedException ex) {
             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("A: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
         this.Station_On_Board(passenger);
        
         
     }
     
     public void Station_On_Board(Robot passenger) {
+        System.out.println("B: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
         // Account all passengers if they are onboard
         this.mutex_acquire();
         
         try {
+                System.out.println("C: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
                 if(TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() == 0) {
                 //Wait for another train
                 this.mutex_release();
                 // Sleep again
                 Station_Wait_For_Train(passenger);
-            }
+                System.out.println("D: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                }
                 else {
+                    int shit = this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS();
                         try {
+                            System.out.println("E: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                            System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + "COCK");
                             TRAIN_ONSTATION.getSemaphore().acquire();
+                            
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        
+                    System.out.println("F: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());    
                     this.STATION_PASSENGERSWAITING--;
                     RobotWaitingPanel.setWaiting(STATION_NAME, STATION_PASSENGERSWAITING);
+                    System.out.println("G: " + this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    System.out.println("Before Add: " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    System.out.println("Added + 1");
                     int currNoOfPassengers = TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + 1;
-                    TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(currNoOfPassengers);
-                    TRAIN_ONSTATION.AddPassenger(passenger);
+                    TRAIN_ONSTATION.setTRAIN_NOOFPASSENGERS(shit + 1);
                     
+                    TRAIN_ONSTATION.AddPassenger(passenger);
                     ROBOT_OBJECT.remove(passenger);
                    
                     
@@ -160,16 +174,16 @@ public class Station {
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
                     System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
                     System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
-                    TrainVisualPanel.trainSeats.get(TRAIN_ONSTATION.getTrainID()).setText(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + "/" + TRAIN_ONSTATION.getTRAIN_NOOFSEATS());
-                    this.mutex_release();
+                    
+                    
                 
-            }
+                }
         }
         finally {
             
-            System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+            
         }
-        
+        this.mutex_release();
         
         
     }
