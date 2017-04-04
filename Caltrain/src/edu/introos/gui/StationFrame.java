@@ -29,8 +29,9 @@ public class StationFrame extends JFrame{
         
         this.setLayout(new MigLayout());
         
-        this.add(stationPanel, "pushx, growx, wrap");
         this.add(robotPanel, "pushx, growx, wrap");
+        this.add(stationPanel, "pushx, growx, wrap");
+        
         this.add(new ManageRobotPanel(), "pushx, center");
     }
     
