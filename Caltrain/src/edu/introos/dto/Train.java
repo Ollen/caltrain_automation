@@ -5,6 +5,7 @@
  */
 package edu.introos.dto;
 
+import edu.introos.gui.TextFrame;
 import edu.introos.gui.TrainVisualPanel;
 import edu.introos.main.Caltrain_X;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class Train implements Runnable {
     @Override
     public void run() {
         System.out.println(this.TRAIN_NAME + " is created and running");
+        TextFrame.textarea.append(this.TRAIN_NAME + " is created and running" + "\n");
+        TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
 //        for(Station stations : TRAIN_STATIONS) {
 //            System.out.println(stations.getSTATION_NAME());
 //        }
@@ -71,9 +74,11 @@ public class Train implements Runnable {
                 TRAIN_STATIONS[getTRAIN_WHERE()].setTRAIN_ONSTATION(this);
                 
                 System.out.println("==================================== ARRIVING ====================================");
-                System.out.println("========================  WELCOME TO " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME() + " STATION! ====================================" );
-                System.out.println("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_PASSNGERSWAITING());
-                System.out.println(this.TRAIN_NOOFPASSENGERS + "/" + this.TRAIN_NOOFSEATS);
+                TextFrame.textarea.append("==================================== ARRIVING ====================================" + "\n");
+                TextFrame.textarea.append("========================  WELCOME TO " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME() + " STATION! ====================================" + "\n");
+                TextFrame.textarea.append("+++++++++++++++++++ Waiting Passengers: " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_PASSNGERSWAITING() + "\n");
+                TextFrame.textarea.append(this.TRAIN_NOOFPASSENGERS + "/" + this.TRAIN_NOOFSEATS + "\n");
+                TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
                 this.DropPassenger();
                 TRAIN_STATIONS[getTRAIN_WHERE()].Station_Load_Train(this.getTRAIN_AVAILABLESEATS());
                 try {
@@ -95,15 +100,16 @@ public class Train implements Runnable {
     
     public void ListPassengers() {
         for(int i = 0; i < TRAIN_PASSENGERS.size(); i++) {
-            System.out.println(TRAIN_PASSENGERS.get(i) + " is in the " + this.TRAIN_NAME + " train");
+            TextFrame.textarea.append(TRAIN_PASSENGERS.get(i) + " is in the " + this.TRAIN_NAME + " train" + "\n");
         }
+        TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
     }
     
     public void DropPassenger() {
         TRAIN_DROPOFFS.clear();
         for (Robot passenger : TRAIN_PASSENGERS) {
             if(passenger.getROBOT_NOOFSTATION() == 0) {
-                System.out.println("It's " + passenger.getROBOT_NAME()+ "[" + this.TRAIN_NOOFPASSENGERS +"]" + "'s destination, dropping off from " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME());
+                TextFrame.textarea.append("It's " + passenger.getROBOT_NAME()+ "[" + this.TRAIN_NOOFPASSENGERS +"]" + "'s destination, dropping off from " + TRAIN_STATIONS[getTRAIN_WHERE()].getSTATION_NAME() + "\n");
                 this.TRAIN_NOOFPASSENGERS--;
                 TRAIN_DROPOFFS.add(passenger);
             }
@@ -111,6 +117,7 @@ public class Train implements Runnable {
                 passenger.UpdateDestination();
             }
         }
+        TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
         TrainVisualPanel.trainSeats.get(this.trainID).setText(this.TRAIN_NOOFPASSENGERS + "/" + this.TRAIN_NOOFSEATS);
         TRAIN_PASSENGERS.removeAll(TRAIN_DROPOFFS);
         TRAIN_AVAILABLESEATS.release(TRAIN_DROPOFFS.size());

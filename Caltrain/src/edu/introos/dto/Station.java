@@ -8,6 +8,7 @@ package edu.introos.dto;
 import edu.introos.gui.StationVisualPanel;
 import edu.introos.gui.TrainVisualPanel;
 import edu.introos.gui.RobotWaitingPanel;
+import edu.introos.gui.TextFrame;
 import edu.introos.main.Caltrain_X;
 import edu.introos.services.NumberGenerator;
 import java.util.ArrayList;
@@ -72,6 +73,8 @@ public class Station {
         //STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
         //RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
         System.out.println(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers");
+        TextFrame.textarea.append(STATION_NAME + ": " + STATION_PASSENGERSWAITING + " Passengers" + "\n");
+        TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
         // CREATE ROBOTS/PASENGERS
         this.lock_init();
         this.cond_init();
@@ -88,8 +91,10 @@ public class Station {
         StationVisualPanel.setOccupied(this.STATION_NAME, this.getTRAIN_ONSTATION().getTRAIN_NAME());
         // Start Critical Section
         System.out.println("Train doors have opened!");
+        TextFrame.textarea.append("Train doors have opened!" + "\n");
         if(STATION_PASSENGERSWAITING == 0) {
             System.out.println("No passengers in " + this.getSTATION_NAME());
+            TextFrame.textarea.append("No passengers in " + this.getSTATION_NAME() + "\n");
             //STATION_PASSENGERSWAITING = NumberGenerator.GENERATE_PASSENGER_INFLUX();
             RobotWaitingPanel.setWaiting(this.STATION_NAME, STATION_PASSENGERSWAITING);
             //STATION_ROBOTS.removeAll(STATION_ROBOTS);
@@ -97,14 +102,17 @@ public class Station {
         }
         else if(TRAIN_AVAILABLESEATS == 0) {
             System.out.println("No more seats! Train is leaving.");
-            
+            TextFrame.textarea.append("No more seats! Train is leaving." + "\n");
         }
         else {
             System.out.println("Passengers boarding!");
+            TextFrame.textarea.append("Passenger boarding!" + "\n");
             System.out.println(this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+            TextFrame.textarea.append(this.TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + "\n");
             this.notifyAll();      
         }
         // End Critical Section
+        TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
         try {
             TrainVisualPanel.trainStatus.get(TRAIN_ONSTATION.getTrainID()).setText("Arrived at " + Caltrain_X.stationNames[TRAIN_ONSTATION.getTRAIN_WHERE()]);
             Thread.sleep(3000); //Delay in Station
@@ -162,11 +170,14 @@ public class Station {
                     
                     
                     System.out.println(passenger.getROBOT_NAME() + " boarded the train");
+                    TextFrame.textarea.append(passenger.getROBOT_NAME() + " boarded the train" + "\n");
                     System.out.println("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME());
+                    TextFrame.textarea.append("Number of available seats of train: " + TRAIN_ONSTATION.getTRAIN_AVAILABLESEATS() + " Train: " + TRAIN_ONSTATION.getTRAIN_NAME() + "\n");
                     System.out.println("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
-                    System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
+                    TextFrame.textarea.append("Number of Passengers = " + TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS() + "\n");
+                    //System.out.println(TRAIN_ONSTATION.getTRAIN_NOOFPASSENGERS());
                     
-                    
+                    TextFrame.textarea.setCaretPosition(TextFrame.textarea.getDocument().getLength());
                 
                 }
         }
